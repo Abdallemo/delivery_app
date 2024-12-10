@@ -20,6 +20,8 @@ dependencies:
   intl: ^0.20.1
   firebase_auth: ^5.3.4
   firebase_core: ^3.8.1
+  cloud_firestore: ^5.5.1
+  lottie: ^1.2.1
 dev_dependencies:
   flutter_test:
     sdk: flutter
