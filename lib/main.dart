@@ -1,11 +1,14 @@
-import 'package:deliver/Auth/login_or_regsiter.dart';
+import 'package:deliver/services/Auth/auth_gate.dart';
 import 'package:deliver/Models/resturent.dart';
+import 'package:deliver/firebase_options.dart';
 import 'package:deliver/themes/theme_switcher.dart';
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-void main()  {
- 
+void main()  async{
+  WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
   runApp(MultiProvider(
     providers: [
       ChangeNotifierProvider(create: (create) => ThemeSwitcher()),
@@ -23,7 +26,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
-      home: const LoginOrRegsiter(),
+      home: const AuthGate(),
       theme: Provider.of<ThemeSwitcher>(context).themeData,
     );
   }

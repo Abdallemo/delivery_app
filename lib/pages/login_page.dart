@@ -1,13 +1,16 @@
+// ignore_for_file: use_build_context_synchronously
+
 import 'package:deliver/components/my_button.dart';
 import 'package:deliver/components/my_text_field.dart';
 import 'package:deliver/pages/home_page.dart';
+import 'package:deliver/services/Auth/auth_service.dart';
 import 'package:flutter/material.dart';
 
 // ignore: must_be_immutable
 class LoginPage extends StatefulWidget {
   void Function()? onTap;
 
-  LoginPage({super.key,required this.onTap});
+  LoginPage({super.key, required this.onTap});
 
   @override
   State<LoginPage> createState() => _LoginPageState();
@@ -17,12 +20,19 @@ class _LoginPageState extends State<LoginPage> {
   final TextEditingController emailcontroller = TextEditingController();
   final TextEditingController passwordcontroller = TextEditingController();
 
-  void login()
-  {
-
-
-    //** goin to the home page after Auth
-    Navigator.push(context, MaterialPageRoute(builder: (context)=>const HomePage(),));
+  void login() async {
+    //
+    final _authService = AuthService();
+    try {
+      await _authService.signInWithEmailPassword(
+          emailcontroller.text, passwordcontroller.text);
+    } catch (e) {
+      showDialog(
+          context: context,
+          builder: (context) => AlertDialog(
+                title: Text(e.toString()),
+              ));
+    }
   }
 
   @override
@@ -77,7 +87,8 @@ class _LoginPageState extends State<LoginPage> {
                   onTap: widget.onTap,
                   child: Text("Resister now",
                       style: TextStyle(
-                          color: Theme.of(context).colorScheme.inversePrimary,fontWeight: FontWeight.bold)),
+                          color: Theme.of(context).colorScheme.inversePrimary,
+                          fontWeight: FontWeight.bold)),
                 )
               ],
             ),
