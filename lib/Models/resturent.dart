@@ -430,16 +430,16 @@ void addToCart(Food food, List<Addon> selectedAddons) async {
   });
 
   if (cartItem != null) {
-    // Increment quantity locally
+ 
     cartItem.quantity++;
     
-    // Update Firestore quantity
+
     await updateCartItemInFirestore(cartItem);
   } else {
-    // Add new cart item locally
+    
     _cart.add(CartItem(food: food, selectedAddons: selectedAddons, quantity: 1));
     
-    // Add new cart item in Firestore
+   
     await _addNewCartItemToFirestore(food, selectedAddons);
   }
 
@@ -451,16 +451,16 @@ void removeFromCart(CartItem cartItem) async {
 
   if (cartIndex != -1) {
     if (_cart[cartIndex].quantity > 1) {
-      // Decrement quantity locally
+   
       _cart[cartIndex].quantity--;
       
-      // Update Firestore quantity
+    
       await updateCartItemInFirestore(_cart[cartIndex]);
     } else {
-      // Remove from local cart
+   
       _cart.removeAt(cartIndex);
       
-      // Remove item from Firestore
+  
       await removeCartItemFromFirestore(cartItem);
     }
   }
@@ -564,7 +564,7 @@ String generateFoodId(Food food) {
 
 Future<void> updateCartItemInFirestore(CartItem cartItem) async {
   try {
-    String uniqueFoodName = cartItem.food.name;  // Use food.name as unique identifier
+    String uniqueFoodName = cartItem.food.name;  
 
     // Update the quantity of the cart item in Firestore
     await FirebaseFirestore.instance
@@ -577,7 +577,7 @@ Future<void> updateCartItemInFirestore(CartItem cartItem) async {
         .then((snapshot) async {
           if (snapshot.docs.isNotEmpty) {
             await snapshot.docs[0].reference.update({
-              'quantity': cartItem.quantity,  // Update the quantity in Firestore
+              'quantity': cartItem.quantity,  
             });
           }
         });
@@ -589,9 +589,10 @@ Future<void> updateCartItemInFirestore(CartItem cartItem) async {
 
 Future<void> _addNewCartItemToFirestore(Food food, List<Addon> selectedAddons) async {
   try {
-    String uniqueFoodName = food.name;  // Use food.name as unique identifier
+    // ignore: unused_local_variable
+    String uniqueFoodName = food.name;  
 
-    // Add the new cart item to Firestore
+
     await FirebaseFirestore.instance
         .collection('Users')
         .doc(FirebaseAuth.instance.currentUser!.uid)
