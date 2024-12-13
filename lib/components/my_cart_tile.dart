@@ -27,7 +27,10 @@ class MyCartTile extends StatelessWidget {
                             borderRadius: BorderRadius.circular(8),
                             child: Image.asset(
                               cartItem.food.imagePath,
-                              height: 100,
+                              height: 105,
+                              width:
+                                  105, // Fixed width for the images 
+                              fit: BoxFit.cover,
                             )),
                         const SizedBox(
                           width: 10,
@@ -35,7 +38,11 @@ class MyCartTile extends StatelessWidget {
                         Column(
                           children: [
                             Text(cartItem.food.name),
-                            Text('RM' + cartItem.food.price.toString(),style: TextStyle(color: Theme.of(context).colorScheme.primary),),
+                            Text(
+                              'RM' + cartItem.food.price.toString(),
+                              style: TextStyle(
+                                  color: Theme.of(context).colorScheme.primary),
+                            ),
                           ],
                         ),
                         Spacer(),
@@ -70,7 +77,8 @@ class MyCartTile extends StatelessWidget {
                                     //name
                                     Text(addon.name),
                                     //price
-                                    Text(' (+RM' + addon.price.toString() + ')'),
+                                    Text(
+                                        ' (+RM' + addon.price.toString() + ')'),
                                   ],
                                 ),
                                 shape: StadiumBorder(

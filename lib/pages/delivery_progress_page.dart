@@ -1,5 +1,6 @@
 import 'package:deliver/Models/resturent.dart';
 import 'package:deliver/components/my_reciept.dart';
+import 'package:deliver/pages/home_page.dart';
 import 'package:deliver/services/database/firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -12,21 +13,30 @@ class DeliveryProgressPage extends StatefulWidget {
 }
 
 class _DeliveryProgressPageState extends State<DeliveryProgressPage> {
-
   FirestoreService db = FirestoreService();
 
   @override
-  void initState(){
+  void initState() {
     super.initState();
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      final resturent = context.read<Resturent>();
 
-    String receipt = context.read<Resturent>().displayCartReceipt();
-    db.saveOrdersToDatabase(receipt);
+      String receipt = resturent.displayCartReceipt();
+      db.saveOrdersToDatabase(receipt);
+      resturent.clearCart();
+    });
   }
 
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         title: const Text("Delivery in Progress..."),
+        leading: IconButton(
+            onPressed: () {
+              Navigator.push(
+                  context, MaterialPageRoute(builder: (context) => HomePage()));
+            },
+            icon: const Icon(Icons.home)),
       ),
       bottomNavigationBar: _buildBottomNavBar(context),
       body: const Column(
@@ -85,15 +95,27 @@ class _DeliveryProgressPageState extends State<DeliveryProgressPage> {
                 decoration: BoxDecoration(
                     color: Theme.of(context).colorScheme.surface,
                     shape: BoxShape.circle),
-                child: IconButton(onPressed: () {}, icon: Icon(Icons.message,color: Theme.of(context).colorScheme.primary,)),
+                child: IconButton(
+                    onPressed: () {},
+                    icon: Icon(
+                      Icons.message,
+                      color: Theme.of(context).colorScheme.primary,
+                    )),
               ),
-              const SizedBox(width: 10,),
+              const SizedBox(
+                width: 10,
+              ),
               //call btn
               Container(
                 decoration: BoxDecoration(
                     color: Theme.of(context).colorScheme.surface,
                     shape: BoxShape.circle),
-                child: IconButton(onPressed: () {}, icon: Icon(Icons.call,color: Colors.green,)),
+                child: IconButton(
+                    onPressed: () {},
+                    icon: Icon(
+                      Icons.call,
+                      color: Colors.green,
+                    )),
               ),
             ],
           )

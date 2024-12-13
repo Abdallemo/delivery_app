@@ -91,6 +91,11 @@ class _LoginPageState extends State<LoginPage> {
                 )
               ],
             ),
+            const SizedBox(height: 25),
+            //google sign in btn
+
+
+
             //not signed in if so register
           ],
         ),
