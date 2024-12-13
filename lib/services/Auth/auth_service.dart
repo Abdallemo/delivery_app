@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
 class AuthService {
@@ -40,10 +41,24 @@ class AuthService {
   // }
 
   //sing up
-  Future<UserCredential> signUpWithEmailPassword(String email, password) async {
+  Future<UserCredential> signUpWithEmailPassword(
+      String useremail, password) async {
     try {
       UserCredential userCredential = await _firebaseAuth
-          .createUserWithEmailAndPassword(email: email, password: password);
+          .createUserWithEmailAndPassword(email: useremail, password: password);
+
+      // Create the Profile subcollection for the user
+      await FirebaseFirestore.instance
+          .collection("Users")
+          .doc(userCredential.user!.uid)
+          .collection('Profile')
+          .add({
+        'username': useremail.split('@')[0], // Store the username here
+        'bio': 'Empty bio', // Initial empty bio
+      });
+
+      // Create the Cart subcollection with an empty cart for the user
+
       return userCredential;
     } on FirebaseAuthException catch (e) {
       throw Exception(e.code);

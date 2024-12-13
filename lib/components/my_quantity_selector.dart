@@ -9,7 +9,7 @@ class QuantitySelector extends StatelessWidget {
   final VoidCallback onIncrement;
   final VoidCallback onDecrement;
 
-  const QuantitySelector(
+   const QuantitySelector(
       {super.key,
       required this.food,
       required this.onIncrement,
@@ -56,7 +56,7 @@ class QuantitySelector extends StatelessWidget {
               size: 20,
               color: Theme.of(context).colorScheme.primary,
             ),
-          ),          
+          ),
         ],
       ),
     );

@@ -1,8 +1,11 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:collection/collection.dart';
 import 'package:deliver/Models/cart_item.dart';
 import 'package:deliver/Models/food.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:uuid/uuid.dart';
 
 class Resturent extends ChangeNotifier {
   final List<Food> _fullmenu = [
@@ -418,35 +421,53 @@ class Resturent extends ChangeNotifier {
 
 
   //OP
-  void addToCart(Food food, List<Addon> selectedAddons) {
+void addToCart(Food food, List<Addon> selectedAddons) async {
+    String uniqueFoodName = food.name;
     CartItem? cartItem = _cart.firstWhereOrNull((item) {
-      bool isSameFood = item.food == food;
+    bool isSameFood = item.food.name == uniqueFoodName; // Compare by food.name
+    bool isSameAddons = ListEquality().equals(item.selectedAddons, selectedAddons);
+    return isSameFood && isSameAddons;
+  });
 
-      bool isSameAddons =
-          ListEquality().equals(item.selectedAddons, selectedAddons);
+  if (cartItem != null) {
+    // Increment quantity locally
+    cartItem.quantity++;
+    
+    // Update Firestore quantity
+    await updateCartItemInFirestore(cartItem);
+  } else {
+    // Add new cart item locally
+    _cart.add(CartItem(food: food, selectedAddons: selectedAddons, quantity: 1));
+    
+    // Add new cart item in Firestore
+    await _addNewCartItemToFirestore(food, selectedAddons);
+  }
 
-      return isSameFood && isSameAddons;
-    });
-    if (cartItem != null) {
-      cartItem.quantity++;
+  notifyListeners();
+}
+
+void removeFromCart(CartItem cartItem) async {
+  int cartIndex = _cart.indexOf(cartItem);
+
+  if (cartIndex != -1) {
+    if (_cart[cartIndex].quantity > 1) {
+      // Decrement quantity locally
+      _cart[cartIndex].quantity--;
+      
+      // Update Firestore quantity
+      await updateCartItemInFirestore(_cart[cartIndex]);
     } else {
-      _cart.add(CartItem(food: food, selectedAddons: selectedAddons));
+      // Remove from local cart
+      _cart.removeAt(cartIndex);
+      
+      // Remove item from Firestore
+      await removeCartItemFromFirestore(cartItem);
     }
-    notifyListeners();
   }
 
-  void removeFromCart(CartItem cartItem) {
-    int cartIndex = _cart.indexOf(cartItem);
+  notifyListeners();
+}
 
-    if (cartIndex != -1) {
-      if (_cart[cartIndex].quantity > 1) {
-        _cart[cartIndex].quantity--;
-      } else {
-        _cart.removeAt(cartIndex);
-      }
-    }
-    notifyListeners();
-  }
 
   double getTotalPrice() {
     double total = 0.0;
@@ -532,4 +553,90 @@ class Resturent extends ChangeNotifier {
         .map((addon) => "${addon.name} (${_formatPrice(addon.price)})")
         .join(", ");
   }
+
+var uuid = Uuid();
+
+String generateFoodId(Food food) {
+  
+  return uuid.v4();  // This will generate a unique ID
+}
+
+
+Future<void> updateCartItemInFirestore(CartItem cartItem) async {
+  try {
+    String uniqueFoodName = cartItem.food.name;  // Use food.name as unique identifier
+
+    // Update the quantity of the cart item in Firestore
+    await FirebaseFirestore.instance
+        .collection('Users')
+        .doc(FirebaseAuth.instance.currentUser!.uid)
+        .collection('Cart')
+        .where('food.name', isEqualTo: uniqueFoodName) // Query based on food.name
+        .where('selectedAddons', isEqualTo: cartItem.selectedAddons.map((addon) => addon.toMap()).toList())
+        .get()
+        .then((snapshot) async {
+          if (snapshot.docs.isNotEmpty) {
+            await snapshot.docs[0].reference.update({
+              'quantity': cartItem.quantity,  // Update the quantity in Firestore
+            });
+          }
+        });
+  } catch (e) {
+    print("Error updating cart item in Firestore: $e");
+  }
+
+}
+
+Future<void> _addNewCartItemToFirestore(Food food, List<Addon> selectedAddons) async {
+  try {
+    String uniqueFoodName = food.name;  // Use food.name as unique identifier
+
+    // Add the new cart item to Firestore
+    await FirebaseFirestore.instance
+        .collection('Users')
+        .doc(FirebaseAuth.instance.currentUser!.uid)
+        .collection('Cart')
+        .add({
+      'food': {
+        'name': food.name,  // Use food.name as unique identifier
+        'description': food.description,
+        'imagePath': food.imagePath,
+        'price': food.price,
+        'catagory': food.catagory.toString().split('.').first,
+        'availableAddons': food.availableAddons.map((addon) => addon.toMap()).toList(),
+      },
+      'selectedAddons': selectedAddons.map((addon) => addon.toMap()).toList(),
+      'quantity': 1,
+      'timestamp': FieldValue.serverTimestamp(),
+    });
+  } catch (e) {
+    print("Error adding new cart item to Firestore: $e");
+  }
+}
+
+
+Future<void> removeCartItemFromFirestore(CartItem cartItem) async {
+  try {
+    String uniqueFoodName = cartItem.food.name;  // Use food.name as unique identifier
+
+    // Remove the cart item from Firestore
+    QuerySnapshot snapshot = await FirebaseFirestore.instance
+        .collection('Users')
+        .doc(FirebaseAuth.instance.currentUser!.uid)
+        .collection('Cart')
+        .where('food.name', isEqualTo: uniqueFoodName) // Query based on food.name
+        .where('selectedAddons', isEqualTo: cartItem.selectedAddons.map((addon) => addon.toMap()).toList())
+        .get();
+
+    if (snapshot.docs.isNotEmpty) {
+      await snapshot.docs[0].reference.delete();
+    }
+  } catch (e) {
+    print("Error removing cart item from Firestore: $e");
+  }
+}
+
+
+
+
 }

@@ -28,8 +28,7 @@ class MyCartTile extends StatelessWidget {
                             child: Image.asset(
                               cartItem.food.imagePath,
                               height: 105,
-                              width:
-                                  105, // Fixed width for the images 
+                              width: 105, // Fixed width for the images
                               fit: BoxFit.cover,
                             )),
                         const SizedBox(
@@ -53,7 +52,7 @@ class MyCartTile extends StatelessWidget {
                                   cartItem.food, cartItem.selectedAddons);
                             },
                             onDecrement: () {
-                              resturent.removeFromCart(cartItem);
+                              resturent.removeFromCart(cartItem); 
                             },
                             quantity: cartItem.quantity)
                       ],

@@ -19,18 +19,18 @@ class FoodPage extends StatefulWidget {
 
 class _FoodPageState extends State<FoodPage> {
 
-  void addToCart(Food food, Map<Addon,bool>selectedAddons){
+void addToCart(Food food, Map<Addon,bool>selectedAddons){
 
-    Navigator.pop(context);
-    List<Addon> currentlySelectedAddons=[];
-    for(Addon addon in widget.food.availableAddons){
-      if(widget.selectedAddons[addon]==true){
-        currentlySelectedAddons.add(addon);
-      }
+  Navigator.pop(context);
+  List<Addon> currentlySelectedAddons=[];
+  for(Addon addon in widget.food.availableAddons){
+    if(widget.selectedAddons[addon]==true){
+      currentlySelectedAddons.add(addon);
     }
+  }
 
     context.read<Resturent>().addToCart(food, currentlySelectedAddons);
-  }
+}
   @override
   Widget build(BuildContext context) {
     final double imageHeight = MediaQuery.of(context).size.height / 3;
