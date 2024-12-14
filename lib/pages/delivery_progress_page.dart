@@ -1,7 +1,9 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:deliver/Models/resturent.dart';
 import 'package:deliver/components/my_reciept.dart';
 import 'package:deliver/pages/home_page.dart';
 import 'package:deliver/services/database/firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -28,13 +30,31 @@ class _DeliveryProgressPageState extends State<DeliveryProgressPage> {
   }
 
   Widget build(BuildContext context) {
+    final user = FirebaseAuth.instance.currentUser;
+
+    if (user == null) {
+      return Scaffold(
+        body: Center(child: Text('User not logged in')),
+      );
+    }
+    final userUid = user.uid;
+    final cartCollection = FirebaseFirestore.instance
+        .collection('Users')
+        .doc(userUid)
+        .collection('Cart');
+    print('User UID: $userUid');
+
     return Scaffold(
       appBar: AppBar(
         title: const Text("Delivery in Progress..."),
         leading: IconButton(
-            onPressed: () {
+            onPressed: () async {
               Navigator.push(
                   context, MaterialPageRoute(builder: (context) => HomePage()));
+              final snapshots = await cartCollection.get();
+              for (var doc in snapshots.docs) {
+                await doc.reference.delete();
+              }
             },
             icon: const Icon(Icons.home)),
       ),
