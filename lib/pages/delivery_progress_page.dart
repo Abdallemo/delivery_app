@@ -1,12 +1,7 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:deliver/Models/resturent.dart';
 import 'package:deliver/components/my_reciept.dart';
-import 'package:deliver/pages/home_page.dart';
-import 'package:deliver/services/database/firestore.dart';
 import 'package:deliver/services/database/firestore_services.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
 
 class DeliveryProgressPage extends StatefulWidget {
   const DeliveryProgressPage({super.key});

@@ -3,7 +3,6 @@ import 'package:deliver/pages/delivery_page.dart';
 import 'package:deliver/pages/profile_page.dart';
 import 'package:deliver/pages/settings_page.dart';
 import 'package:deliver/services/Auth/auth_service.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
 class MyDrawer extends StatelessWidget {
