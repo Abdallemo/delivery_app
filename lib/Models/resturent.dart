@@ -509,6 +509,8 @@ void removeFromCart(CartItem cartItem) async {
     notifyListeners();
   }
 
+
+
 //report Generator
 
   String displayCartReceipt() {

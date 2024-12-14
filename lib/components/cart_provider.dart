@@ -52,7 +52,7 @@ class CartProvider with ChangeNotifier {
       await FirebaseFirestore.instance
           .collection('Users')
           .doc(userId)
-          .collection('Cart') // Corrected path here
+          .collection('Cart') 
           .doc(cartItemId)
           .delete();
       

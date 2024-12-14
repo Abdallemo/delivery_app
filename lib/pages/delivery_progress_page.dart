@@ -3,6 +3,7 @@ import 'package:deliver/Models/resturent.dart';
 import 'package:deliver/components/my_reciept.dart';
 import 'package:deliver/pages/home_page.dart';
 import 'package:deliver/services/database/firestore.dart';
+import 'package:deliver/services/database/firestore_services.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -20,12 +21,26 @@ class _DeliveryProgressPageState extends State<DeliveryProgressPage> {
   @override
   void initState() {
     super.initState();
-    WidgetsBinding.instance.addPostFrameCallback((_) {
-      final resturent = context.read<Resturent>();
+    WidgetsBinding.instance.addPostFrameCallback((_) async {
+      try {
+        // Generate receipt and get food items and total price
+        var receiptData = await db.generateReceiptFromCart();
 
-      String receipt = resturent.displayCartReceipt();
-      db.saveOrdersToDatabase(receipt);
-      resturent.clearCart();
+        // Extract receipt, food items, and total price from the response
+        String receipt = receiptData['receipt'];
+        List<Map<String, dynamic>> foodItems = receiptData['foodItems'];
+        double totalPrice = receiptData['totalPrice'];
+
+        // Save the order with the new data
+        await db.saveOrdersToDatabase(receipt, foodItems, totalPrice);
+
+        // Clear the cart after the order is saved
+        await db.clearCart();
+
+        print("Order processed successfully");
+      } catch (e) {
+        print("Error processing order: $e");
+      }
     });
   }
 
