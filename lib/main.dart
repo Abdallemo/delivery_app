@@ -1,3 +1,4 @@
+import 'package:deliver/components/cart_provider.dart';
 import 'package:deliver/services/Auth/auth_gate.dart';
 import 'package:deliver/Models/resturent.dart';
 import 'package:deliver/firebase_options.dart';
@@ -13,6 +14,8 @@ void main()  async{
     providers: [
       ChangeNotifierProvider(create: (create) => ThemeSwitcher()),
       ChangeNotifierProvider(create: (create) => Resturent()),
+      ChangeNotifierProvider(create: (create) => CartProvider()),
+
     ],
     child: MyApp(),
   ));
