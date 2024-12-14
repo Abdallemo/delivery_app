@@ -82,7 +82,7 @@ class _ProfilePageState extends State<ProfilePage> {
 
   @override
   Widget build(BuildContext context) {
-    String username = user.email!.split('@').first;
+
 
     return Scaffold(
         appBar: AppBar(
