@@ -1,4 +1,5 @@
 import 'package:deliver/components/my_drawer_tile.dart';
+import 'package:deliver/pages/delivery_page.dart';
 import 'package:deliver/pages/profile_page.dart';
 import 'package:deliver/pages/settings_page.dart';
 import 'package:deliver/services/Auth/auth_service.dart';
@@ -42,6 +43,13 @@ class MyDrawer extends StatelessWidget {
               onTap: () { Navigator.pop(context);
               Navigator.push(context, MaterialPageRoute(builder: (context)=>const ProfilePage()));} ,
               text: "P R O F I L E"),
+
+              MyDrawerTile(
+              icon: Icons.delivery_dining_sharp,
+              onTap: () { Navigator.pop(context);
+              Navigator.push(context, MaterialPageRoute(builder: (context)=>const DeliveryPage()));} ,
+              text: "MY P U R C H A S E"),
+
 
               MyDrawerTile(
               icon: Icons.settings_suggest_outlined,
