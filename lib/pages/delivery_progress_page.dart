@@ -52,24 +52,14 @@ class _DeliveryProgressPageState extends State<DeliveryProgressPage> {
         body: Center(child: Text('User not logged in')),
       );
     }
-    final userUid = user.uid;
-    final cartCollection = FirebaseFirestore.instance
-        .collection('Users')
-        .doc(userUid)
-        .collection('Cart');
-    print('User UID: $userUid');
 
     return Scaffold(
       appBar: AppBar(
         title: const Text("Delivery in Progress..."),
         leading: IconButton(
             onPressed: () async {
-              Navigator.push(
-                  context, MaterialPageRoute(builder: (context) => HomePage()));
-              final snapshots = await cartCollection.get();
-              for (var doc in snapshots.docs) {
-                await doc.reference.delete();
-              }
+              // Navigator.of(context)..pop()..pop()..pop()..pop();
+              Navigator.pushNamed(context, '/homepage');
             },
             icon: const Icon(Icons.home)),
       ),

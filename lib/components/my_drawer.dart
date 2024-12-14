@@ -8,9 +8,10 @@ import 'package:flutter/material.dart';
 
 class MyDrawer extends StatelessWidget {
    const MyDrawer({super.key});
-  void logout(){
+  void logout(BuildContext context){
     final authService = AuthService();
     authService.singOut();
+    Navigator.pushReplacementNamed(context, '/');
 
   }
 
@@ -62,7 +63,7 @@ class MyDrawer extends StatelessWidget {
           Spacer(),
           //logout
           MyDrawerTile(
-              icon: Icons.logout_rounded, onTap: logout, text: "L O G O U T"),
+              icon: Icons.logout_rounded, onTap: ()=> logout(context), text: "L O G O U T"),
           const SizedBox(
             height: 25,
           )

@@ -1,4 +1,5 @@
 import 'package:deliver/components/cart_provider.dart';
+import 'package:deliver/pages/home_page.dart';
 import 'package:deliver/services/Auth/auth_gate.dart';
 import 'package:deliver/Models/resturent.dart';
 import 'package:deliver/firebase_options.dart';
@@ -33,6 +34,10 @@ class MyApp extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       home: const AuthGate(),
       theme: Provider.of<ThemeSwitcher>(context).themeData,
+      routes: {
+        '/homepage': (context) => const HomePage(),
+
+      },
     );
   }
 }
