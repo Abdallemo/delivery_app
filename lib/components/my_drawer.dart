@@ -1,4 +1,5 @@
 import 'package:deliver/components/my_drawer_tile.dart';
+import 'package:deliver/pages/profile_page.dart';
 import 'package:deliver/pages/settings_page.dart';
 import 'package:deliver/services/Auth/auth_service.dart';
 import 'package:flutter/material.dart';
@@ -37,10 +38,17 @@ class MyDrawer extends StatelessWidget {
               text: "H O M E"),
           //settings
           MyDrawerTile(
+              icon: Icons.person,
+              onTap: () { Navigator.pop(context);
+              Navigator.push(context, MaterialPageRoute(builder: (context)=>const ProfilePage()));} ,
+              text: "P R O F I L E"),
+
+              MyDrawerTile(
               icon: Icons.settings_suggest_outlined,
               onTap: () { Navigator.pop(context);
               Navigator.push(context, MaterialPageRoute(builder: (context)=>const SettingsPage()));} ,
               text: "S E T I N G S"),
+
           Spacer(),
           //logout
           MyDrawerTile(
