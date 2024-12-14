@@ -12,6 +12,8 @@ class ProfilePage extends StatefulWidget {
 
 class _ProfilePageState extends State<ProfilePage> {
   final user = FirebaseAuth.instance.currentUser!;
+  final userCollection = FirebaseFirestore.instance.collection("Users");
+
   Future<void> editField(String field) async {
     String newValue = '';
     await showDialog(
@@ -24,14 +26,58 @@ class _ProfilePageState extends State<ProfilePage> {
               ),
               content: TextField(
                 autofocus: true,
-                style: TextStyle(color: Theme.of(context).colorScheme.inversePrimary),
+                style: TextStyle(
+                    color: Theme.of(context).colorScheme.inversePrimary),
                 decoration: InputDecoration(
-                  hintText: "Enter new $field",
-                  hintStyle: TextStyle(color: Theme.of(context).colorScheme.primary)
-                ),
+                    hintText: "Enter new $field",
+                    hintStyle: TextStyle(
+                        color: Theme.of(context).colorScheme.primary)),
+                onChanged: (value) {
+                  newValue = value;
+                },
               ),
-              
+              actions: [
+                //cancel btn >:
+                TextButton(
+                    onPressed: () => {Navigator.pop(context)},
+                    child: Text(
+                      'Cancel',
+                      style: TextStyle(
+                          color: Theme.of(context).colorScheme.primary),
+                    )),
+
+                //save btn :D
+                TextButton(
+                    onPressed: () => {Navigator.of(context).pop(context)},
+                    child: Text(
+                      'Save',
+                      style: TextStyle(
+                          color: Theme.of(context).colorScheme.primary),
+                    ))
+              ],
             ));
+
+    if (newValue.trim().isNotEmpty) {
+      // Fetch dc id
+      final snapshot = await FirebaseFirestore.instance
+          .collection("Users")
+          .doc(user.uid)
+          .collection("Profile")
+          .get();
+
+      if (snapshot.docs.isNotEmpty) {
+      //getters
+        final profileDocId = snapshot.docs.first.id;
+
+        // Update the field in the Profile document
+        FirebaseFirestore.instance
+            .collection("Users")
+            .doc(user.uid)
+            .collection("Profile")
+            .doc(profileDocId)
+            .update({field: newValue});
+      }
+    }
   }
 
   @override
