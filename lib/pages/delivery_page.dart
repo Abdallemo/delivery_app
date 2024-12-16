@@ -1,5 +1,4 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:deliver/components/my_timeline_tile.dart';
 import 'package:deliver/services/database/firestore_services.dart';
 import 'package:flutter/material.dart';
 
@@ -34,27 +33,28 @@ class _DeliveryPageState extends State<DeliveryPage> {
                   List<dynamic> foodItems =
                       (document.data() as Map<String, dynamic>)['foodItems'];
                   //get Orders for each doc
-                  for (var item in foodItems) {
-                    String foodName = (item as Map<String, dynamic>)['name'];
-                    int quantity = (item as Map<String, dynamic>)['quantity'];
-                    double price = (item as Map<String, dynamic>)['price'];
-                  }
-
                   return Card(
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Text('Order ID: ${document.id}'),
+                        // Text('Order ID: ${document.id}'),
                         ...foodItems.map((item) {
-                          String foodName =
-                              (item as Map<String, dynamic>)['name'];
-                          int quantity =
-                              (item as Map<String, dynamic>)['quantity'];
-                          double price =
-                              (item as Map<String, dynamic>)['price'];
+                          String foodName = (item)['name'];
+                          int quantity = (item)['quantity'];
+                          double price = (item)['price'];
+                          String imagePath = (item)['imagePath'];
 
-                          return Text(
-                              'Item: $foodName, Qty: $quantity, Price: $price');
+                          return Container(
+                            margin: const EdgeInsets.all(8),
+                            child: Row(
+                              children: [
+                                Image.asset(imagePath, width: 50, height: 50),
+                                SizedBox(width: 10,),
+                                Text(
+                                    'Item: $foodName, Qty: $quantity, Price: $price'),
+                              ],
+                            ),
+                          );
                         }).toList(),
                       ],
                     ),
