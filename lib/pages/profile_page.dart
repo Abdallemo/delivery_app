@@ -1,4 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:deliver/services/Auth/auth_gate.dart';
+import 'package:deliver/services/Auth/auth_service.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:deliver/components/text_box.dart';
@@ -66,7 +68,7 @@ class _ProfilePageState extends State<ProfilePage> {
           .get();
 
       if (snapshot.docs.isNotEmpty) {
-      //getters
+        //getters
         final profileDocId = snapshot.docs.first.id;
 
         // Update the field in the Profile document
@@ -82,8 +84,6 @@ class _ProfilePageState extends State<ProfilePage> {
 
   @override
   Widget build(BuildContext context) {
-
-
     return Scaffold(
         appBar: AppBar(
           title: const Text('PROFILE'),
@@ -110,12 +110,147 @@ class _ProfilePageState extends State<ProfilePage> {
                         size: 100,
                       ),
                       const SizedBox(height: 20),
-                      Text(
-                        user.email!,
-                        textAlign: TextAlign.center,
-                        style: TextStyle(
-                            color:
-                                Theme.of(context).colorScheme.inversePrimary),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Text(
+                            user.email!,
+                            textAlign: TextAlign.center,
+                            style: TextStyle(
+                                color: Theme.of(context)
+                                    .colorScheme
+                                    .inversePrimary),
+                          ),
+                          IconButton(
+                            icon: Icon(
+                              Icons.delete,
+                              color: Theme.of(context).colorScheme.error,
+                            ),
+                            onPressed: () {
+                              showDialog(
+                                context: context,
+                                builder: (context) {
+                                  return AlertDialog(
+                                    title: Text("Confirm Deletion"),
+                                    content: Text(
+                                        "Are you sure you want to delete this account?"),
+                                    actions: [
+                                      TextButton(
+                                        onPressed: () => Navigator.pop(context),
+                                        child: Text("Cancel"),
+                                      ),
+                                      TextButton(
+                                        onPressed: () {
+                                          TextEditingController
+                                              passwordController =
+                                              TextEditingController();
+                                          Navigator.pop(
+                                              context); // Close the first dialog
+
+                                          showDialog(
+                                            context: context,
+                                            builder: (context) {
+                                              return AlertDialog(
+                                                title: Text(
+                                                    "Confirm Your Password"),
+                                                content: Column(
+                                                  mainAxisSize:
+                                                      MainAxisSize.min,
+                                                  children: [
+                                                    Text(
+                                                      "Please enter your password to permanently delete your account.",
+                                                    ),
+                                                    const SizedBox(height: 10),
+                                                    TextField(
+                                                      controller:
+                                                          passwordController,
+                                                      obscureText: true,
+                                                      decoration:
+                                                          InputDecoration(
+                                                        border:
+                                                            OutlineInputBorder(),
+                                                        labelText: 'Password',
+                                                        hintText:
+                                                            'Enter Your Password',
+                                                      ),
+                                                    ),
+                                                  ],
+                                                ),
+                                                actions: [
+                                                  TextButton(
+                                                    onPressed: () => Navigator.pop(
+                                                        context), // Close dialog
+                                                    child: const Text("Cancel"),
+                                                  ),
+                                                  TextButton(
+                                                    style: TextButton.styleFrom(
+                                                      backgroundColor:
+                                                          Colors.redAccent,
+                                                      foregroundColor:
+                                                          Colors.white,
+                                                    ),
+                                                    onPressed: () async {
+                                                      try {
+                                                        await AuthService()
+                                                            .reauthenticateAndDelete(
+                                                          user.email!,
+                                                          passwordController
+                                                              .text,
+                                                        );
+
+                                                        Navigator.pop(
+                                                            context); // Close password dialog
+                                                        Navigator
+                                                            .pushReplacement(
+                                                          context,
+                                                          MaterialPageRoute(
+                                                            builder:
+                                                                (context) =>
+                                                                    AuthGate(),
+                                                          ),
+                                                        );
+                                                      } catch (e) {
+                                                        // Handle error (e.g., wrong password)
+                                                        Navigator.pop(
+                                                            context); // Close password dialog
+                                                        showDialog(
+                                                          context: context,
+                                                          builder: (context) {
+                                                            return AlertDialog(
+                                                              title:
+                                                                  Text("Error"),
+                                                              content: Text(
+                                                                  e.toString()),
+                                                              actions: [
+                                                                TextButton(
+                                                                  onPressed: () =>
+                                                                      Navigator.pop(
+                                                                          context),
+                                                                  child: Text(
+                                                                      "OK"),
+                                                                ),
+                                                              ],
+                                                            );
+                                                          },
+                                                        );
+                                                      }
+                                                    },
+                                                    child: const Text("Delete"),
+                                                  ),
+                                                ],
+                                              );
+                                            },
+                                          );
+                                        },
+                                        child: Text("Delete"),
+                                      ),
+                                    ],
+                                  );
+                                },
+                              );
+                            },
+                          ),
+                        ],
                       ),
                       const SizedBox(height: 50),
                       Padding(

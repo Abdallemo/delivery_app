@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/material.dart';
 
 class AuthService {
   //geting instence of firebse auth
@@ -68,5 +69,61 @@ class AuthService {
 
   Future<void> singOut() async {
     return await _firebaseAuth.signOut();
+  }
+
+  Future<void> reauthenticateAndDelete(String email, String password) async {
+    try {
+      User? user = _firebaseAuth.currentUser;
+
+      if (user == null) {
+        throw Exception("No user is currently signed in.");
+      }
+
+      // Reauthenticate the user
+      AuthCredential credential =
+          EmailAuthProvider.credential(email: email, password: password);
+      await user.reauthenticateWithCredential(credential);
+
+      // After successful reauthentication, delete the account
+      await deleteUserAccount();
+    } on FirebaseAuthException catch (e) {
+      throw Exception(e.code);
+    }
+  }
+
+  Future<void> deleteUserAccount() async {
+    try {
+      // Get the current user
+      User? user = _firebaseAuth.currentUser;
+
+      if (user == null) {
+        throw Exception("No user is currently signed in.");
+      }
+
+      // Delete user's data from Firestore
+      final userDoc =
+          FirebaseFirestore.instance.collection("Users").doc(user.uid);
+
+      // Delete the Profile subcollection
+      final profileSubcollection = await userDoc.collection('Profile').get();
+      for (var doc in profileSubcollection.docs) {
+        await doc.reference.delete();
+      }
+
+      // Delete the main user document
+      await userDoc.delete();
+
+      // Delete the user's authentication account
+      await user.delete();
+    } on FirebaseAuthException catch (e) {
+      if (e.code == 'requires-recent-login') {
+        // If recent login is required
+        throw Exception(
+          "The user must reauthenticate before this operation can be performed.",
+        );
+      } else {
+        throw Exception(e.code);
+      }
+    }
   }
 }

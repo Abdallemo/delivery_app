@@ -31,109 +31,110 @@ class _DeliveryPageState extends State<DeliveryPage> {
         ),
       ),
       backgroundColor: Theme.of(context).colorScheme.surface,
-      body: _isloading
-          ? const Center(
-              child: CircularProgressIndicator(),
-            )
-          : StreamBuilder<QuerySnapshot>(
-              stream: FirestoreService().getOrdersFromFirebase(),
-              builder: (context, snapshot) {
-                if (snapshot.hasData) {
-                  List orderList = snapshot.data!.docs;
-                  return ListView.builder(
-                    itemCount: orderList.length,
-                    itemBuilder: (context, index) {
-                      // here getting individual items
-                      DocumentSnapshot document = orderList[index];
-                      String docId = document.id;
-                      List<dynamic> foodItems = (document.data()
-                          as Map<String, dynamic>)['foodItems'];
+      body: StreamBuilder<QuerySnapshot>(
+          stream: FirestoreService().getOrdersFromFirebase(),
+          builder: (context, snapshot) {
+            if (_isloading || snapshot.connectionState == ConnectionState.waiting) {
+              // Show loading indicator while data is being fetched
+              return Center(child: CircularProgressIndicator());
+            } else if (snapshot.hasError) {
+              // Handle any errors that might occur while fetching data
+              return Center(child: Text('Error: ${snapshot.error}'));
+            } else if (snapshot.hasData) {
+              List orderList = snapshot.data!.docs;
 
-                      //get Orders for each doc
-                      return Card(
-                        child: Container(
-                          margin: const EdgeInsets.all(8),
-                          padding: const EdgeInsets.all(10),
-                          decoration: BoxDecoration(
-                            color: Theme.of(context).colorScheme.secondary,
-                            borderRadius: BorderRadius.circular(8),
-                          ),
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              // Text('Order ID: ${document.id}'),
-                              SizedBox(height: 10),
+              return ListView.builder(
+                itemCount: orderList.length,
+                itemBuilder: (context, index) {
+                  // here getting individual items
+                  DocumentSnapshot document = orderList[index];
+                  String docId = document.id;
+                  List<dynamic> foodItems =
+                      (document.data() as Map<String, dynamic>)['foodItems'];
 
-                              ...foodItems.map((item) {
-                                String foodName = (item)['name'];
-                                int quantity = (item)['quantity'];
-                                double price = (item)['price'];
-                                String imagePath = (item)['imagePath'];
-                                List selectedAddons = (item)['selectedAddons'];
+                  //get Orders for each doc
+                  return Card(
+                    child: Container(
+                      margin: const EdgeInsets.all(8),
+                      padding: const EdgeInsets.all(10),
+                      decoration: BoxDecoration(
+                        color: Theme.of(context).colorScheme.secondary,
+                        borderRadius: BorderRadius.circular(8),
+                      ),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          // Text('Order ID: ${document.id}'),
+                          SizedBox(height: 10),
 
-                                return Container(
-                                  decoration: BoxDecoration(
-                                      borderRadius: BorderRadius.circular(8)),
-                                  margin: const EdgeInsets.all(8),
-                                  padding: const EdgeInsets.all(15),
-                                  child: Column(
+                          ...foodItems.map((item) {
+                            String foodName = (item)['name'];
+                            int quantity = (item)['quantity'];
+                            double price = (item)['price'];
+                            String imagePath = (item)['imagePath'];
+                            List selectedAddons = (item)['selectedAddons'];
+
+                            return Container(
+                              decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(8)),
+                              margin: const EdgeInsets.all(8),
+                              padding: const EdgeInsets.all(15),
+                              child: Column(
+                                children: [
+                                  Row(
                                     children: [
-                                      Row(
+                                      Image.asset(
+                                        imagePath,
+                                        width: 70,
+                                        height: 70,
+                                        fit: BoxFit.fitHeight,
+                                      ),
+                                      SizedBox(
+                                        width: 20,
+                                      ),
+                                      Column(
                                         children: [
-                                          Image.asset(
-                                            imagePath,
-                                            width: 70,
-                                            height: 70,
-                                            fit: BoxFit.fitHeight,
+                                          Text(
+                                            foodName,
+                                            style: TextStyle(
+                                                fontWeight: FontWeight.bold),
                                           ),
-                                          SizedBox(
-                                            width: 20,
-                                          ),
-                                          Column(
-                                            children: [
-                                              Text(
-                                                foodName,
-                                                style: TextStyle(
-                                                    fontWeight:
-                                                        FontWeight.bold),
-                                              ),
-                                              Text(
-                                                'Quantixi + ( x ${quantity.toString()})',
-                                                textAlign: TextAlign.end,
-                                                style: TextStyle(
-                                                  color: Theme.of(context)
-                                                      .colorScheme
-                                                      .primary,
-                                                ),
-                                              ),
-                                            ],
+                                          Text(
+                                            'Quantixi + ( x ${quantity.toString()})',
+                                            textAlign: TextAlign.end,
+                                            style: TextStyle(
+                                              color: Theme.of(context)
+                                                  .colorScheme
+                                                  .primary,
+                                            ),
                                           ),
                                         ],
                                       ),
-                                      SizedBox(
-                                        height: 10,
-                                      ),
-                                      const Row(
-                                        crossAxisAlignment:
-                                            CrossAxisAlignment.end,
-                                        children: [Text('Total ')],
-                                      )
                                     ],
                                   ),
-                                );
-                              }),
-                            ],
-                          ),
-                        ),
-                      );
-
-                      //display a list of orders
-                    },
+                                  SizedBox(
+                                    height: 10,
+                                  ),
+                                  const Row(
+                                    crossAxisAlignment: CrossAxisAlignment.end,
+                                    children: [Text('Total ')],
+                                  )
+                                ],
+                              ),
+                            );
+                          }),
+                        ],
+                      ),
+                    ),
                   );
-                } else {
-                  return const Text("No Orders....");
-                }
-              }),
+
+                  //display a list of orders
+                },
+              );
+            } else {
+              return const Text("No Orders....");
+            }
+          }),
     );
   }
 }

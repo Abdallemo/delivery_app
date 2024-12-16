@@ -22,16 +22,31 @@ class _LoginPageState extends State<LoginPage> {
   void login() async {
     //
     final _authService = AuthService();
+    showDialog(
+      context: context,
+      builder: (context) {
+        return const Center(
+          child: CircularProgressIndicator( valueColor: AlwaysStoppedAnimation<Color>(Colors.blue)),
+        );
+      },
+    );
+
     try {
       await _authService.signInWithEmailPassword(
           emailcontroller.text, passwordcontroller.text);
     } catch (e) {
-      showDialog(
+      if (mounted) {
+        showDialog(
           context: context,
           builder: (context) => AlertDialog(
-                title: Text(e.toString()),
-              ));
+            title: Text(e.toString()),
+          ),
+        );
+      }
     }
+    
+      Navigator.of(context).pop();
+    
   }
 
   @override
@@ -93,8 +108,6 @@ class _LoginPageState extends State<LoginPage> {
             ),
             const SizedBox(height: 25),
             //google sign in btn
-
-
 
             //not signed in if so register
           ],
