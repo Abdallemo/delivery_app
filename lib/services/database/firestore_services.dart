@@ -13,13 +13,14 @@ class FirestoreService {
       .collection("Cart");
 
   // Save order to Firestore with additional fields (name, price, image, etc.)
-  Future<void> saveOrdersToDatabase(String receipt, List<Map<String, dynamic>> foodItems, double totalPrice) async {
+  Future<void> saveOrdersToDatabase(String receipt, List<Map<String, dynamic>> foodItems,double totalPrice) async {
     try {
       await orders.add({
         'date': DateTime.now(),
         'order': receipt,
         'foodItems': foodItems,
         'totalPrice': totalPrice,
+        
       });
       print("Order saved to Firestore");
     } catch (e) {
@@ -51,6 +52,7 @@ class FirestoreService {
           'quantity': quantity,
           'price': foodPrice,
           'imagePath': imagePath,
+          'selectedAddons':selectedAddons
         });
 
         // Calculate price for selected addons
