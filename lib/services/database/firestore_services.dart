@@ -92,4 +92,10 @@ class FirestoreService {
       print("Error clearing cart: $e");
     }
   }
+  
+  Stream<QuerySnapshot> getOrdersFromFirebase(){
+    final orderStream = orders.orderBy('date',descending:true).snapshots();
+    return orderStream;
+
+  }
 }
