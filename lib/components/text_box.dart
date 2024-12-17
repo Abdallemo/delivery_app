@@ -4,7 +4,11 @@ class MyTextBox extends StatelessWidget {
   final String text;
   final String sectionName;
   final void Function()? onPressed;
-  const MyTextBox({super.key, required this.text, required this.sectionName,required this.onPressed});
+  const MyTextBox(
+      {super.key,
+      required this.text,
+      required this.sectionName,
+      required this.onPressed});
 
   @override
   Widget build(BuildContext context) {
@@ -23,18 +27,14 @@ class MyTextBox extends StatelessWidget {
             children: [
               Text(sectionName),
               IconButton(
-                  onPressed:onPressed,
-                  icon: Icon(
-                    Icons.settings,
-                    color: Theme.of(context).colorScheme.inversePrimary,
-                  ))
+                  onPressed: onPressed,
+                  icon: Image.asset('assets/flattIcon/editing.png', width: 24.0))
             ],
           ),
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               Text(text),
-
             ],
           )
         ],

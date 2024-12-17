@@ -122,10 +122,7 @@ class _ProfilePageState extends State<ProfilePage> {
                                     .inversePrimary),
                           ),
                           IconButton(
-                            icon: Icon(
-                              Icons.delete,
-                              color: Theme.of(context).colorScheme.error,
-                            ),
+                            icon: Image.asset('assets/flattIcon/delete.png',width: 24.0,color: Theme.of(context).colorScheme.error,),
                             onPressed: () {
                               showDialog(
                                 context: context,

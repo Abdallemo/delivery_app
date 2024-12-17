@@ -2,6 +2,7 @@ import 'package:deliver/components/my_button.dart';
 import 'package:deliver/components/my_text_field.dart';
 import 'package:deliver/services/Auth/auth_service.dart';
 import 'package:flutter/material.dart';
+import 'package:lottie/lottie.dart';
 
 class RegisterPage extends StatefulWidget {
   final Function()? onTap;
@@ -50,9 +51,8 @@ class _RegisterPageState extends State<RegisterPage> {
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 //logo will but here if found lol
-                Image.asset(
-                  'lib/images/logo/Animation - 1733579760946.gif',
-                ),
+                Lottie.asset("assets/animations/Animation - 1734462434864.json",
+                    width: 310),
 
                 const SizedBox(
                   height: 25,

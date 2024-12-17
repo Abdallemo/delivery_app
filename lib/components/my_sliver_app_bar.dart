@@ -7,13 +7,15 @@ class MySliverAppBar extends StatelessWidget {
   final Widget child;
   final Widget title;
 
-  const MySliverAppBar({super.key, required this.child, required this.title});
-
+  MySliverAppBar({super.key, required this.child, required this.title});
+  var scaffoldKey =GlobalKey<ScaffoldState>();
   @override
   Widget build(BuildContext context) {
     final userId = FirebaseAuth.instance.currentUser!.uid; // Get current user's UID
 
     return SliverAppBar(
+      key: scaffoldKey,
+      leading: IconButton(onPressed: (){Scaffold.of(context).openDrawer();}, icon: Image.asset('assets/flattIcon/menu.png',width: 24.0,)),
       expandedHeight: 320,
       collapsedHeight: 120,
       floating: false,
@@ -46,7 +48,7 @@ class MySliverAppBar extends StatelessWidget {
                       MaterialPageRoute(builder: (context) => const CartPage()),
                     );
                   },
-                  icon: const Icon(Icons.shopping_cart_outlined),
+                  icon: Image.asset('assets/flattIcon/shopping-bag.png',width: 24.0,),
                 ),
                 if (itemCount > 0)
                   Positioned(

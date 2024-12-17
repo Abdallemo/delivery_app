@@ -4,9 +4,10 @@ import 'package:deliver/pages/profile_page.dart';
 import 'package:deliver/pages/settings_page.dart';
 import 'package:deliver/services/Auth/auth_service.dart';
 import 'package:flutter/material.dart';
+import 'package:lottie/lottie.dart';
 
 class MyDrawer extends StatelessWidget {
-   const MyDrawer({super.key});
+  const MyDrawer({super.key});
   void logout(BuildContext context){
     final authService = AuthService();
     authService.singOut();
@@ -18,44 +19,41 @@ class MyDrawer extends StatelessWidget {
   Widget build(BuildContext context) {
 
     return Drawer(
+      
       backgroundColor: Theme.of(context).colorScheme.surface,
       child: Column(
         children: [
           //logo
           Padding(
-            padding: const EdgeInsets.only(top: 100.0),
-            child: Icon(
-              Icons.delivery_dining,
-              size: 70,
-              color: Theme.of(context).colorScheme.inversePrimary,
-            ),
+            padding: const EdgeInsets.only(top: 50.0),
+            child: Lottie.asset("assets/animations/Animation - 1733839487140.json",width: 155),
             
           ),
           Padding(
-            padding: EdgeInsets.all(12.0),
-            child: Divider(),
+            padding: EdgeInsets.all(8.0),
+            child: Divider(thickness: 0.5,),
           ),
           //home
           MyDrawerTile(
-              icon: Icons.home,
+              icon: Image.asset('assets/flattIcon/home.png',width: 24.0,),
               onTap: () => Navigator.pop(context),
               text: "H O M E"),
           //settings
           MyDrawerTile(
-              icon: Icons.person,
+              icon: Image.asset('assets/flattIcon/user-icon.png',width: 24.0,),
               onTap: () { Navigator.pop(context);
               Navigator.push(context, MaterialPageRoute(builder: (context)=>const ProfilePage()));} ,
               text: "P R O F I L E"),
 
               MyDrawerTile(
-              icon: Icons.delivery_dining_sharp,
+              icon: Image.asset('assets/flattIcon/shopping-done.png',width: 24.0,),
               onTap: () { Navigator.pop(context);
               Navigator.push(context, MaterialPageRoute(builder: (context)=>const DeliveryPage()));} ,
               text: "MY P U R C H A S E"),
 
 
               MyDrawerTile(
-              icon: Icons.settings_suggest_outlined,
+              icon: Image.asset('assets/flattIcon/settings.png',width: 24.0,),
               onTap: () { Navigator.pop(context);
               Navigator.push(context, MaterialPageRoute(builder: (context)=>const SettingsPage()));} ,
               text: "S E T I N G S"),
@@ -63,7 +61,7 @@ class MyDrawer extends StatelessWidget {
           Spacer(),
           //logout
           MyDrawerTile(
-              icon: Icons.logout_rounded, onTap: ()=> logout(context), text: "L O G O U T"),
+              icon: Image.asset('assets/flattIcon/logout.png',width: 24.0,), onTap: ()=> logout(context), text: "L O G O U T"),
           const SizedBox(
             height: 25,
           )

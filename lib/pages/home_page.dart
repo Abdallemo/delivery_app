@@ -74,12 +74,12 @@ class _HomePageState extends State<HomePage>
                         children: [
                           Divider(
                             indent: 25,
-                            endIndent: 25,
+                            endIndent: 55,
                             color: Theme.of(context).colorScheme.secondary,
                           ),
 
                           //location
-                           MyCurrentLocation(),
+                          MyCurrentLocation(),
                           //description box
                           const MyDescriptionBox()
                         ],

@@ -21,11 +21,16 @@ class CartPage extends StatelessWidget {
         .collection('Users')
         .doc(userUid)
         .collection('Cart');
-        print('User UID: $userUid');
+    print('User UID: $userUid');
 
     return Scaffold(
       appBar: AppBar(
         title: const Text("Cart"),
+        leading: IconButton(
+            onPressed: () {
+              Navigator.of(context).pop();
+            },
+            icon: const Icon(Icons.arrow_back_ios_new_rounded)),
         backgroundColor: Colors.transparent,
         foregroundColor: Theme.of(context).colorScheme.inversePrimary,
         actions: [
@@ -57,7 +62,7 @@ class CartPage extends StatelessWidget {
                 ),
               );
             },
-            icon: const Icon(Icons.delete),
+            icon: Image.asset('assets/flattIcon/delete.png', width: 24.0),
           )
         ],
       ),

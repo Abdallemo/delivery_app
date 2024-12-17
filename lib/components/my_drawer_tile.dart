@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 
 class MyDrawerTile extends StatelessWidget {
   final String text;
-  final IconData? icon;
+  final Widget? icon;
   final void Function()? onTap;
 
   const MyDrawerTile(
@@ -17,10 +17,7 @@ class MyDrawerTile extends StatelessWidget {
           text,
           style: TextStyle(color: Theme.of(context).colorScheme.inversePrimary),
         ),
-        leading: Icon(
-          icon,
-          color: Theme.of(context).colorScheme.inversePrimary,
-        ),
+        leading: icon,
         onTap: onTap,
       ),
     );

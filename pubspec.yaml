@@ -21,7 +21,7 @@ dependencies:
   firebase_auth: ^5.3.4
   firebase_core: ^3.8.1
   cloud_firestore: ^5.5.1
-  lottie: ^1.2.1
+  lottie: ^3.0.0
   timeline_tile: ^2.0.0
 dev_dependencies:
   flutter_test:
@@ -46,7 +46,8 @@ flutter:
      - 'lib/images/Snacks_Street/'
      - 'lib/images/Desserts/'
      - 'lib/images/logo/'
-  #   - images/a_dot_ham.jpeg
+     - 'assets/animations/'
+     - 'assets/flattIcon/'
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/to/resolution-aware-images
