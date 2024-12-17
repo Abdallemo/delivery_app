@@ -25,10 +25,11 @@ class MyDrawer extends StatelessWidget {
           Padding(
             padding: const EdgeInsets.only(top: 100.0),
             child: Icon(
-              Icons.lock_open_rounded,
-              size: 40,
+              Icons.delivery_dining,
+              size: 70,
               color: Theme.of(context).colorScheme.inversePrimary,
             ),
+            
           ),
           Padding(
             padding: EdgeInsets.all(12.0),

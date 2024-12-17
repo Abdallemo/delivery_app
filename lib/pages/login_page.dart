@@ -22,31 +22,18 @@ class _LoginPageState extends State<LoginPage> {
   void login() async {
     //
     final _authService = AuthService();
-    showDialog(
-      context: context,
-      builder: (context) {
-        return const Center(
-          child: CircularProgressIndicator( valueColor: AlwaysStoppedAnimation<Color>(Colors.blue)),
-        );
-      },
-    );
 
     try {
       await _authService.signInWithEmailPassword(
           emailcontroller.text, passwordcontroller.text);
     } catch (e) {
-      if (mounted) {
-        showDialog(
-          context: context,
-          builder: (context) => AlertDialog(
-            title: Text(e.toString()),
-          ),
-        );
-      }
+      showDialog(
+        context: context,
+        builder: (context) => AlertDialog(
+          title: Text(e.toString()),
+        ),
+      );
     }
-    
-      Navigator.of(context).pop();
-    
   }
 
   @override
@@ -58,7 +45,9 @@ class _LoginPageState extends State<LoginPage> {
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             //logo will but here if found lol
-            Image.asset('lib/images/logo/Animation - 1733579760946.gif'),
+            Image.asset(
+              'lib/images/logo/Animation - 1733579760946.gif',
+            ),
             const SizedBox(
               height: 25,
             ),
