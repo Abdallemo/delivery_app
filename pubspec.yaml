@@ -23,6 +23,7 @@ dependencies:
   cloud_firestore: ^5.5.1
   lottie: ^3.0.0
   timeline_tile: ^2.0.0
+  # google_sign_in: ^5.0.0
 dev_dependencies:
   flutter_launcher_icons: ^ 0.14.2
   flutter_test:
