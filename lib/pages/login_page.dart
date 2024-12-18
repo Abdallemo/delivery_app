@@ -37,7 +37,6 @@ class _LoginPageState extends State<LoginPage> {
     }
   }
 
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -100,8 +99,68 @@ class _LoginPageState extends State<LoginPage> {
                     )
                   ],
                 ),
-                const SizedBox(height: 25),
+                const SizedBox(height: 15),
                 //google sign in btn
+                Row(
+                  children: [
+                    // Left Line
+                    Flexible(
+                      child: Container(
+                        margin: EdgeInsets.symmetric(horizontal: 10),
+                        height: 1.9, // Thickness of the line
+                        color: Color(0xFFFFFFFF),
+                      ),
+                    ),
+                    // Text
+                    Text(
+                      'Or Sign In With',
+                      style: TextStyle(color: Colors.grey),
+                    ),
+                    // Right Line
+                    Flexible(
+                      child: Container(
+                        margin: EdgeInsets.symmetric(horizontal: 10),
+                        height: 1.9, // Thickness of the line
+                        color: Color(0xFFFFFFFF),
+                      ),
+                    ),
+                  ],
+                ),
+                const SizedBox(height: 15),
+
+                // ElevatedButton(onPressed: onPressed, child: child),
+                // IconButton(
+                //     onPressed: () => AuthService().signInWithGoogle(),
+                //     icon: Image.asset(
+                //       'assets/flattIcon/google.png',
+                //       width: 40,
+                //     )),
+                InkWell(
+                  onTap: ()=>AuthService().signInWithGoogle(),
+                  borderRadius: BorderRadius.circular(
+                      16), // Ripple effect rounded corners
+                  child: Container(
+                    decoration: BoxDecoration(
+                      color: Colors.white, // Background color
+                      borderRadius:
+                          BorderRadius.circular(16), // Rounded corners
+                      boxShadow: [
+                        BoxShadow(
+                          color: Colors.grey.shade300,
+                          spreadRadius: 1,
+                          blurRadius: 8,
+                          offset: Offset(0, 3),
+                        ),
+                      ],
+                    ),
+                    padding: EdgeInsets.symmetric(horizontal: 25, vertical: 15),
+                    child: Image.asset(
+                      'assets/flattIcon/google.png',
+                      width: 40,
+                      height: 40,
+                    ),
+                  ),
+                )
 
                 //not signed in if so register
               ],

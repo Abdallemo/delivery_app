@@ -52,7 +52,7 @@ class _RegisterPageState extends State<RegisterPage> {
               children: [
                 //logo will but here if found lol
                 Lottie.asset("assets/animations/Animation - 1734462434864.json",
-                    width: 210),
+                    width: 310),
 
                 const SizedBox(
                   height: 25,

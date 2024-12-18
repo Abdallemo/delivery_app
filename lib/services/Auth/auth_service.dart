@@ -1,6 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-// import 'package:google_sign_in/google_sign_in.dart';
+import 'package:google_sign_in/google_sign_in.dart';
 
 class AuthService {
   //geting instence of firebse auth
@@ -23,24 +23,43 @@ class AuthService {
   }
 //google sign in
 
-//   Future<UserCredential> signInWithGoogle() async {
-    
-//   // Trigger the authentication flow
-//   final GoogleSignInAccount? googleUser = await GoogleSignIn().signIn();
+  Future<UserCredential> signInWithGoogle() async {
+    // Trigger the authentication flow
+    final GoogleSignInAccount? googleUser = await GoogleSignIn().signIn();
 
-//   // Obtain the auth details from the request
-//   final GoogleSignInAuthentication? googleAuth = await googleUser?.authentication;
+    // Obtain the auth details from the request
+    final GoogleSignInAuthentication? googleAuth =
+        await googleUser?.authentication;
 
-//   // Create a new credential
-//   final credential = GoogleAuthProvider.credential(
-//     accessToken: googleAuth?.accessToken,
-//     idToken: googleAuth?.idToken,
-//   );
-  
-//   // Once signed in, return the UserCredential
-//   return await FirebaseAuth.instance.signInWithCredential(credential);
-// }
+    // Create a new credential
+    final credential = GoogleAuthProvider.credential(
+      accessToken: googleAuth?.accessToken,
+      idToken: googleAuth?.idToken,
+    );
+    final UserCredential userCredential =
+        await FirebaseAuth.instance.signInWithCredential(credential);
 
+    // Retrieve the user information
+    final User? user = userCredential.user;
+
+    if (user != null) {
+      // Check if the user document already exists
+      final userDoc =
+          FirebaseFirestore.instance.collection("Users").doc(user.uid);
+      final docSnapshot = await userDoc.get();
+      if (!docSnapshot.exists) {
+        // Create the Profile subcollection for the user
+        await userDoc.collection('Profile').add({
+          'username':
+              user.displayName ?? user.email?.split('@')[0] ?? "Unknown User",
+          'bio': 'Empty bio', // Initial empty bio
+        });
+      }
+    }
+
+    // Once signed in, return the UserCredential
+    return userCredential;
+  }
 
   // sinInWithGoogle() async {
   //   //popup
@@ -61,7 +80,8 @@ class AuthService {
   // }
 
   //sing up
-  Future<UserCredential> signUpWithEmailPassword(String useremail, password) async {
+  Future<UserCredential> signUpWithEmailPassword(
+      String useremail, password) async {
     try {
       UserCredential userCredential = await _firebaseAuth
           .createUserWithEmailAndPassword(email: useremail, password: password);
@@ -86,6 +106,7 @@ class AuthService {
   //sign out
 
   Future<void> singOut() async {
+    await GoogleSignIn().signOut();
     return await _firebaseAuth.signOut();
   }
 
