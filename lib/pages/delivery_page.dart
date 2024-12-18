@@ -1,6 +1,9 @@
+// ignore_for_file: unused_local_variable
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:deliver/services/database/firestore_services.dart';
 import 'package:flutter/material.dart';
+import 'package:lottie/lottie.dart';
 
 class DeliveryPage extends StatefulWidget {
   const DeliveryPage({super.key});
@@ -14,7 +17,7 @@ class _DeliveryPageState extends State<DeliveryPage> {
   @override
   void initState() {
     _isloading = true;
-    Future.delayed(const Duration(milliseconds: 500), () {
+    Future.delayed(const Duration(milliseconds: 1000), () {
       setState(() {
         _isloading = false;
       });
@@ -34,9 +37,13 @@ class _DeliveryPageState extends State<DeliveryPage> {
       body: StreamBuilder<QuerySnapshot>(
           stream: FirestoreService().getOrdersFromFirebase(),
           builder: (context, snapshot) {
-            if (_isloading || snapshot.connectionState == ConnectionState.waiting) {
+            if (_isloading ||
+                snapshot.connectionState == ConnectionState.waiting) {
               // Show loading indicator while data is being fetched
-              return Center(child: CircularProgressIndicator());
+              return Center(
+                child: Lottie.asset("assets/animations/Food-loading.json",
+                    width: 210),
+              );
             } else if (snapshot.hasError) {
               // Handle any errors that might occur while fetching data
               return Center(child: Text('Error: ${snapshot.error}'));

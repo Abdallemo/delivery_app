@@ -8,7 +8,7 @@ class MySliverAppBar extends StatelessWidget {
   final Widget title;
 
   MySliverAppBar({super.key, required this.child, required this.title});
-  var scaffoldKey =GlobalKey<ScaffoldState>();
+  final scaffoldKey =GlobalKey<ScaffoldState>();
   @override
   Widget build(BuildContext context) {
     final userId = FirebaseAuth.instance.currentUser!.uid; // Get current user's UID
@@ -20,6 +20,7 @@ class MySliverAppBar extends StatelessWidget {
       collapsedHeight: 120,
       floating: false,
       pinned: true,
+      
       actions: [
         StreamBuilder<QuerySnapshot>(
           stream: FirebaseFirestore.instance
@@ -75,11 +76,14 @@ class MySliverAppBar extends StatelessWidget {
           },
         ),
       ],
+      
       centerTitle: true,
       backgroundColor: Theme.of(context).colorScheme.surface,
       foregroundColor: Theme.of(context).colorScheme.inversePrimary,
       title: const Text("Door Dash"),
+      
       flexibleSpace: FlexibleSpaceBar(
+
         background: Padding(
           padding: const EdgeInsets.only(bottom: 50.0),
           child: child,

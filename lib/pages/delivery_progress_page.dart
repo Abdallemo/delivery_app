@@ -1,7 +1,10 @@
-import 'package:deliver/components/my_reciept.dart';
+// ignore_for_file: prefer_const_constructors
+
+// import 'package:deliver/components/my_reciept.dart';
 import 'package:deliver/services/database/firestore_services.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:lottie/lottie.dart';
 
 class DeliveryProgressPage extends StatefulWidget {
   const DeliveryProgressPage({super.key});
@@ -12,7 +15,7 @@ class DeliveryProgressPage extends StatefulWidget {
 
 class _DeliveryProgressPageState extends State<DeliveryProgressPage> {
   FirestoreService db = FirestoreService();
-
+  bool isloading = false;
   @override
   void initState() {
     super.initState();
@@ -37,6 +40,14 @@ class _DeliveryProgressPageState extends State<DeliveryProgressPage> {
         print("Error processing order: $e");
       }
     });
+
+    Future.delayed(const Duration(milliseconds: 2000), () {
+
+        setState(() {
+          isloading = false;
+
+        });
+    });
   }
 
   Widget build(BuildContext context) {
@@ -59,10 +70,15 @@ class _DeliveryProgressPageState extends State<DeliveryProgressPage> {
             icon: const Icon(Icons.home)),
       ),
       bottomNavigationBar: _buildBottomNavBar(context),
-      body: const Column(
-        children: [
-          MyReciept(),
-        ],
+      body: SafeArea(
+        child: Center(
+          
+          child: 
+          Lottie.asset(
+            "assets/animations/done.json",
+            width: 500,
+          ),
+        ),
       ),
     );
   }

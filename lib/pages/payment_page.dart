@@ -63,40 +63,40 @@ class _PaymentPageState extends State<PaymentPage> {
         foregroundColor: Theme.of(context).colorScheme.inversePrimary,
       ),
       body: SafeArea(
-    
-          child: SingleChildScrollView(
-            child: Column(
-              children: [
-                CreditCardWidget(
-                    cardNumber: cardNumber,
-                    expiryDate: expiryDate,
-                    cardHolderName: cardHolderName,
-                    cvvCode: cvvCode,
-                    showBackView: isCvvFocused,
-                    onCreditCardWidgetChange: (p0) {}),
-                CreditCardForm(
-                    cardNumber: cardNumber,
-                    expiryDate: expiryDate,
-                    cardHolderName: cardHolderName,
-                    cvvCode: cvvCode,
-                    onCreditCardModelChange: (data) {
-                      setState(() {
-                        cardNumber = data.cardNumber;
-                        expiryDate = data.expiryDate;
-                        cardHolderName = data.cardHolderName;
-                        cvvCode = data.cvvCode;
-                      });
-                    },
-                    formKey: formKey),
-                const SizedBox(height: 30,),
-                MyButton(onTap: () => userTappedPay(), text: "Pay now"),
-                const SizedBox(
-                  height: 25,
-                ),
-              ],
-            ),
+        child: SingleChildScrollView(
+          child: Column(
+            children: [
+              CreditCardWidget(
+                  cardNumber: cardNumber,
+                  expiryDate: expiryDate,
+                  cardHolderName: cardHolderName,
+                  cvvCode: cvvCode,
+                  showBackView: isCvvFocused,
+                  onCreditCardWidgetChange: (p0) {}),
+              CreditCardForm(
+                  cardNumber: cardNumber,
+                  expiryDate: expiryDate,
+                  cardHolderName: cardHolderName,
+                  cvvCode: cvvCode,
+                  onCreditCardModelChange: (data) {
+                    setState(() {
+                      cardNumber = data.cardNumber;
+                      expiryDate = data.expiryDate;
+                      cardHolderName = data.cardHolderName;
+                      cvvCode = data.cvvCode;
+                    });
+                  },
+                  formKey: formKey),
+              const SizedBox(
+                height: 30,
+              ),
+              MyButton(onTap: () => userTappedPay(), text: "Pay now"),
+              const SizedBox(
+                height: 25,
+              ),
+            ],
           ),
-      
+        ),
       ),
     );
   }

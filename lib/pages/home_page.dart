@@ -66,17 +66,18 @@ class _HomePageState extends State<HomePage>
         backgroundColor: Theme.of(context).colorScheme.secondary,
         drawer: const MyDrawer(),
         body: NestedScrollView(
+          
             headerSliverBuilder: (context, innerBoxIsScrolled) => [
                   MySliverAppBar(
                       title: MyTabBar(tabController: _tabController),
                       child: Column(
                         mainAxisAlignment: MainAxisAlignment.end,
                         children: [
-                          Divider(
-                            indent: 25,
-                            endIndent: 55,
-                            color: Theme.of(context).colorScheme.secondary,
-                          ),
+                          // Divider(
+                          //   indent: 25,
+                          //   endIndent: 30,
+                          //   color: Theme.of(context).colorScheme.secondary,
+                          // ),
 
                           //location
                           MyCurrentLocation(),
@@ -85,8 +86,10 @@ class _HomePageState extends State<HomePage>
                         ],
                       ))
                 ],
+                
             body: Consumer<Resturent>(
               builder: (context, resturent, child) => TabBarView(
+
                   controller: _tabController,
                   children: getFoodInThisCatagory(resturent.fullmenu)),
             )));
