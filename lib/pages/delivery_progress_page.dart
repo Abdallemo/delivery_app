@@ -13,9 +13,11 @@ class DeliveryProgressPage extends StatefulWidget {
   State<DeliveryProgressPage> createState() => _DeliveryProgressPageState();
 }
 
-class _DeliveryProgressPageState extends State<DeliveryProgressPage> {
+class _DeliveryProgressPageState extends State<DeliveryProgressPage>
+    with TickerProviderStateMixin {
   FirestoreService db = FirestoreService();
-  bool isloading = false;
+  late final AnimationController _controller;
+  bool _animationCompleted = false;
   @override
   void initState() {
     super.initState();
@@ -41,13 +43,26 @@ class _DeliveryProgressPageState extends State<DeliveryProgressPage> {
       }
     });
 
-    Future.delayed(const Duration(milliseconds: 2000), () {
+    _controller = AnimationController(
+      vsync: this,
+      duration: const Duration(seconds: 3),
+    )..addStatusListener((status) {
+        if (status == AnimationStatus.completed) {
+          setState(() {
+            _animationCompleted = true;
+          });
+          // Add a delay before navigating
+          Future.delayed(const Duration(seconds: 1), () {
+            Navigator.pushNamed(context, '/homepage');
+          });
+        }
+      });
+  }
 
-        setState(() {
-          isloading = false;
-
-        });
-    });
+  @override
+  void dispose() {
+    _controller.dispose(); // Don't forget to dispose the controller
+    super.dispose();
   }
 
   Widget build(BuildContext context) {
@@ -69,14 +84,19 @@ class _DeliveryProgressPageState extends State<DeliveryProgressPage> {
             },
             icon: const Icon(Icons.home)),
       ),
-      bottomNavigationBar: _buildBottomNavBar(context),
+      // bottomNavigationBar: _buildBottomNavBar(context),
       body: SafeArea(
         child: Center(
-          
-          child: 
-          Lottie.asset(
-            "assets/animations/done.json",
-            width: 500,
+          child: Visibility(
+            visible: !_animationCompleted,
+            child: Lottie.asset(
+              "assets/animations/done.json",
+              width: 600,
+              controller: _controller,
+              onLoaded: (composition) {
+                _controller.forward(); // Starts the animation
+              },
+            ),
           ),
         ),
       ),
@@ -84,79 +104,79 @@ class _DeliveryProgressPageState extends State<DeliveryProgressPage> {
   }
 
   //mycustome for driver
-  Widget _buildBottomNavBar(BuildContext context) {
-    return Container(
-      height: 100,
-      decoration: BoxDecoration(
-          color: Theme.of(context).colorScheme.secondary,
-          borderRadius: BorderRadius.only(
-              topLeft: Radius.circular(40), topRight: Radius.circular(40))),
-      padding: const EdgeInsets.all(25),
-      child: Row(
-        children: [
-          //driver profile pcis
-          Container(
-            decoration: BoxDecoration(
-                color: Theme.of(context).colorScheme.surface,
-                shape: BoxShape.circle),
-            child: IconButton(onPressed: () {}, icon: Icon(Icons.person)),
-          ),
+//   Widget _buildBottomNavBar(BuildContext context) {
+//     return Container(
+//       height: 100,
+//       decoration: BoxDecoration(
+//           color: Theme.of(context).colorScheme.secondary,
+//           borderRadius: BorderRadius.only(
+//               topLeft: Radius.circular(40), topRight: Radius.circular(40))),
+//       padding: const EdgeInsets.all(25),
+//       child: Row(
+//         children: [
+//           //driver profile pcis
+//           Container(
+//             decoration: BoxDecoration(
+//                 color: Theme.of(context).colorScheme.surface,
+//                 shape: BoxShape.circle),
+//             child: IconButton(onPressed: () {}, icon: Icon(Icons.person)),
+//           ),
 
-          SizedBox(
-            width: 10,
-          ),
-          //driver detaisl
-          Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Text(
-                "Hafiz Bin Mohd",
-                style: TextStyle(
-                    fontWeight: FontWeight.bold,
-                    fontSize: 18,
-                    color: Theme.of(context).colorScheme.inversePrimary),
-              ),
-              Text(
-                "Driver",
-                style: TextStyle(color: Theme.of(context).colorScheme.primary),
-              ),
-            ],
-          ),
-          const Spacer(),
+//           SizedBox(
+//             width: 10,
+//           ),
+//           //driver detaisl
+//           Column(
+//             crossAxisAlignment: CrossAxisAlignment.start,
+//             children: [
+//               Text(
+//                 "Hafiz Bin Mohd",
+//                 style: TextStyle(
+//                     fontWeight: FontWeight.bold,
+//                     fontSize: 18,
+//                     color: Theme.of(context).colorScheme.inversePrimary),
+//               ),
+//               Text(
+//                 "Driver",
+//                 style: TextStyle(color: Theme.of(context).colorScheme.primary),
+//               ),
+//             ],
+//           ),
+//           const Spacer(),
 
-          Row(
-            children: [
-              //mssg btn
-              Container(
-                decoration: BoxDecoration(
-                    color: Theme.of(context).colorScheme.surface,
-                    shape: BoxShape.circle),
-                child: IconButton(
-                    onPressed: () {},
-                    icon: Icon(
-                      Icons.message,
-                      color: Theme.of(context).colorScheme.primary,
-                    )),
-              ),
-              const SizedBox(
-                width: 10,
-              ),
-              //call btn
-              Container(
-                decoration: BoxDecoration(
-                    color: Theme.of(context).colorScheme.surface,
-                    shape: BoxShape.circle),
-                child: IconButton(
-                    onPressed: () {},
-                    icon: Icon(
-                      Icons.call,
-                      color: Colors.green,
-                    )),
-              ),
-            ],
-          )
-        ],
-      ),
-    );
-  }
+//           Row(
+//             children: [
+//               //mssg btn
+//               Container(
+//                 decoration: BoxDecoration(
+//                     color: Theme.of(context).colorScheme.surface,
+//                     shape: BoxShape.circle),
+//                 child: IconButton(
+//                     onPressed: () {},
+//                     icon: Icon(
+//                       Icons.message,
+//                       color: Theme.of(context).colorScheme.primary,
+//                     )),
+//               ),
+//               const SizedBox(
+//                 width: 10,
+//               ),
+//               //call btn
+//               Container(
+//                 decoration: BoxDecoration(
+//                     color: Theme.of(context).colorScheme.surface,
+//                     shape: BoxShape.circle),
+//                 child: IconButton(
+//                     onPressed: () {},
+//                     icon: Icon(
+//                       Icons.call,
+//                       color: Colors.green,
+//                     )),
+//               ),
+//             ],
+//           )
+//         ],
+//       ),
+//     );
+//   }
 }
