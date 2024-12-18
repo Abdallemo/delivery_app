@@ -63,7 +63,7 @@ class _DeliveryPageState extends State<DeliveryPage> {
                   return Card(
                     child: Container(
                       margin: const EdgeInsets.all(8),
-                      padding: const EdgeInsets.all(10),
+                      padding: const EdgeInsets.all(1),
                       decoration: BoxDecoration(
                         color: Theme.of(context).colorScheme.secondary,
                         borderRadius: BorderRadius.circular(8),
@@ -84,16 +84,18 @@ class _DeliveryPageState extends State<DeliveryPage> {
                             return Container(
                               decoration: BoxDecoration(
                                   borderRadius: BorderRadius.circular(8)),
-                              margin: const EdgeInsets.all(8),
-                              padding: const EdgeInsets.all(15),
+                              margin: const EdgeInsets.only(
+                                  left: 10, right: 10, bottom: 10, top: 5),
+                              padding: const EdgeInsets.only(
+                                  left: 10, right: 10, bottom: 10, top: 0),
                               child: Column(
                                 children: [
                                   Row(
                                     children: [
                                       Image.asset(
                                         imagePath,
-                                        width: 70,
-                                        height: 70,
+                                        width: 80,
+                                        height: 80,
                                         fit: BoxFit.fitHeight,
                                       ),
                                       SizedBox(
@@ -107,7 +109,7 @@ class _DeliveryPageState extends State<DeliveryPage> {
                                                 fontWeight: FontWeight.bold),
                                           ),
                                           Text(
-                                            'Quantixi + ( x ${quantity.toString()})',
+                                            'Quantity ( x ${quantity.toString()})',
                                             textAlign: TextAlign.end,
                                             style: TextStyle(
                                               color: Theme.of(context)
@@ -122,9 +124,12 @@ class _DeliveryPageState extends State<DeliveryPage> {
                                   SizedBox(
                                     height: 10,
                                   ),
-                                  const Row(
+                                  Row(
                                     crossAxisAlignment: CrossAxisAlignment.end,
-                                    children: [Text('Total ')],
+                                    children: [
+                                      Text('Total '),Text('${price.toString()}'),
+                                      
+                                    ],
                                   )
                                 ],
                               ),

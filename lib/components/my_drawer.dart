@@ -11,7 +11,7 @@ class MyDrawer extends StatelessWidget {
   void logout(BuildContext context){
     final authService = AuthService();
     authService.singOut();
-    Navigator.pushReplacementNamed(context, '/');
+    Navigator.pushReplacementNamed(context, '/Auth');
 
   }
 
