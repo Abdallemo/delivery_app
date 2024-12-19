@@ -52,7 +52,8 @@ class AuthService {
         await userDoc.collection('Profile').add({
           'username':
               user.displayName ?? user.email?.split('@')[0] ?? "Unknown User",
-          'bio': 'Empty bio', // Initial empty bio
+          'bio': 'Empty bio', 
+          'location':'empt location'// Initial empty bio
         });
       }
     }
@@ -93,7 +94,8 @@ class AuthService {
           .collection('Profile')
           .add({
         'username': useremail.split('@')[0], // Store the username here
-        'bio': 'Empty bio', // Initial empty bio
+        'bio': 'Empty bio',
+        'location':'empt location' // Initial empty bio
       });
 
       // Create the Cart subcollection with an empty cart for the user

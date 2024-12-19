@@ -1,4 +1,5 @@
 import 'package:deliver/Models/resturent.dart';
+import 'package:deliver/pages/location_page.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -51,7 +52,8 @@ class MyCurrentLocation extends StatelessWidget {
             style: TextStyle(color: Theme.of(context).colorScheme.primary),
           ),
           GestureDetector(
-            onTap: () => openLocationSearchBox(context),
+            onTap: () => Navigator.push(context,
+                MaterialPageRoute(builder: (context) => LocationPage())),
             child: Row(
               children: [
                 Consumer<Resturent>(
@@ -59,7 +61,8 @@ class MyCurrentLocation extends StatelessWidget {
                         resturent.deliveryAddress,
                         style: TextStyle(
                             color: Theme.of(context).colorScheme.inversePrimary,
-                            fontWeight: FontWeight.bold))),
+                            fontWeight: FontWeight.bold))
+                    ),
 
                 //drop down icon i guss
                 Icon(Icons.keyboard_arrow_down),
