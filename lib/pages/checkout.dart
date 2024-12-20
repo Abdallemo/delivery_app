@@ -217,7 +217,7 @@ StreamBuilder<QuerySnapshot> buildCartStream() {
                 ],
               ),
               trailing: Text(
-                '\$${((foodPrice + addonsPrice) * quantity).toStringAsFixed(2)}',
+                '\$${totalFoodPrice.toStringAsFixed(2)}',
                 style: TextStyle(fontWeight: FontWeight.bold),
               ),
             ),

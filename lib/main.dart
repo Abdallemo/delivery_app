@@ -1,4 +1,5 @@
 import 'package:deliver/components/cart_provider.dart';
+import 'package:deliver/components/my_notification.dart';
 import 'package:deliver/pages/home_page.dart';
 import 'package:deliver/pages/on_board_leading.dart';
 import 'package:deliver/services/Auth/auth_gate.dart';
@@ -13,6 +14,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 void main()  async{
   WidgetsFlutterBinding.ensureInitialized();
+   await NotificationHelper.initialize();
   final prefs= await SharedPreferences.getInstance();
   final showHome = prefs.getBool('showHome')?? false;
   await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);

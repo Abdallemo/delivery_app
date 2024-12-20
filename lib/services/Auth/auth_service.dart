@@ -46,8 +46,8 @@ class AuthService {
       // Check if the user document already exists
       final userDoc =
           FirebaseFirestore.instance.collection("Users").doc(user.uid);
-      final docSnapshot = await userDoc.get();
-      if (!docSnapshot.exists) {
+      final docSnapshot = await userDoc.collection('Profile').get();
+      if (docSnapshot.docs.isEmpty) {
         // Create the Profile subcollection for the user
         await userDoc.collection('Profile').add({
           'username':
@@ -95,7 +95,7 @@ class AuthService {
           .add({
         'username': useremail.split('@')[0], // Store the username here
         'bio': 'Empty bio',
-        'location':'empt location' // Initial empty bio
+        'location':'empty location' // Initial empty bio
       });
 
       // Create the Cart subcollection with an empty cart for the user
