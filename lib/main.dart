@@ -7,6 +7,7 @@ import 'package:deliver/firebase_options.dart';
 import 'package:deliver/themes/theme_switcher.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -15,6 +16,7 @@ void main()  async{
   final prefs= await SharedPreferences.getInstance();
   final showHome = prefs.getBool('showHome')?? false;
   await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
+  await dotenv.load();
   runApp(MultiProvider(
     providers: [
       ChangeNotifierProvider(create: (create) => ThemeSwitcher()),

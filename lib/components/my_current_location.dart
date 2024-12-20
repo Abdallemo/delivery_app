@@ -1,9 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:deliver/Models/resturent.dart';
 import 'package:deliver/pages/location_page.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
 
 class MyCurrentLocation extends StatelessWidget {
   MyCurrentLocation({super.key});

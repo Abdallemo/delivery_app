@@ -3,6 +3,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:google_places_flutter/google_places_flutter.dart';
 import 'package:google_places_flutter/model/prediction.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 
 class LocationPage extends StatefulWidget {
   LocationPage({
@@ -66,7 +67,7 @@ class _LocationPageState extends State<LocationPage> {
           padding: EdgeInsets.symmetric(horizontal: 20),
           child: GooglePlaceAutoCompleteTextField(
             textEditingController: controller,
-            googleAPIKey: "AIzaSyBAjEI2NyPmttgbnPdOdqEObcOfAFu-W74",
+            googleAPIKey: dotenv.env['GOOGLE_API_KEY']??'',
             inputDecoration: InputDecoration(
               hintText: "Search your location",
               border: InputBorder.none,
