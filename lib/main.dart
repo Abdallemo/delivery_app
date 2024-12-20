@@ -5,6 +5,7 @@ import 'package:deliver/pages/on_board_leading.dart';
 import 'package:deliver/services/Auth/auth_gate.dart';
 import 'package:deliver/Models/resturent.dart';
 import 'package:deliver/firebase_options.dart';
+import 'package:deliver/services/notification/firebase_fcm_api.dart';
 import 'package:deliver/themes/theme_switcher.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
@@ -18,6 +19,7 @@ void main()  async{
   final prefs= await SharedPreferences.getInstance();
   final showHome = prefs.getBool('showHome')?? false;
   await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
+   await FirebaseFcmApi().initNotifications();
   await dotenv.load();
   runApp(MultiProvider(
     providers: [
