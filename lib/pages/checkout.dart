@@ -132,7 +132,7 @@ StreamBuilder<QuerySnapshot> buildLocationStream() {
                 child: Row(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Icon(Icons.location_on,size: 18),
+                    Icon(Icons.location_on, size: 18),
                     Expanded(
                       child: Text(
                         location,
@@ -183,7 +183,14 @@ StreamBuilder<QuerySnapshot> buildCartStream() {
           final double foodPrice = (data['food']['price'] ?? 0.0).toDouble();
           final String imagePath = data['food']['imagePath'] ?? '';
           final List<dynamic> selectedAddons = data['selectedAddons'] ?? [];
-
+          final double addonsPrice = selectedAddons.isNotEmpty
+              ? selectedAddons.fold(0.0, (sum, addon) {
+                  return sum +
+                      (addon['price'] ??
+                          0.0); // Sum the prices of selected add-ons
+                })
+              : 0.0;
+          final double totalFoodPrice = (foodPrice + addonsPrice) * quantity;
           return Card(
             elevation: 4,
             margin: EdgeInsets.symmetric(vertical: 8, horizontal: 16),
@@ -200,7 +207,7 @@ StreamBuilder<QuerySnapshot> buildCartStream() {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
-                    'Price: \$${foodPrice.toStringAsFixed(2)} x $quantity',
+                    'Price: RM${foodPrice.toString()} x $quantity',
                     style: TextStyle(fontSize: 12),
                   ),
                   Text(
@@ -210,7 +217,7 @@ StreamBuilder<QuerySnapshot> buildCartStream() {
                 ],
               ),
               trailing: Text(
-                '\$${(foodPrice * quantity).toStringAsFixed(2)}',
+                '\$${((foodPrice + addonsPrice) * quantity).toStringAsFixed(2)}',
                 style: TextStyle(fontWeight: FontWeight.bold),
               ),
             ),

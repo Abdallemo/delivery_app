@@ -77,12 +77,8 @@ class _DeliveryProgressPageState extends State<DeliveryProgressPage>
     return Scaffold(
       appBar: AppBar(
         title: const Text("Delivery in Progress..."),
-        leading: IconButton(
-            onPressed: () async {
-              // Navigator.of(context)..pop()..pop()..pop()..pop();
-              Navigator.pushNamed(context, '/homepage');
-            },
-            icon: const Icon(Icons.home)),
+        automaticallyImplyLeading: false,
+        centerTitle: true,
       ),
       // bottomNavigationBar: _buildBottomNavBar(context),
       body: SafeArea(
