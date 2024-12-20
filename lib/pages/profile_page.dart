@@ -1,6 +1,7 @@
 // ignore_for_file: prefer_const_constructors
 
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:deliver/pages/location_page.dart';
 import 'package:deliver/services/Auth/auth_gate.dart';
 import 'package:deliver/services/Auth/auth_service.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -100,8 +101,11 @@ class _ProfilePageState extends State<ProfilePage> {
                 .collection("Profile")
                 .snapshots(),
             builder: (context, snpshot) {
+              if (snpshot.connectionState == ConnectionState.waiting) {
+                return Center(
+                    child: CircularProgressIndicator()); // Loading indicator
+              }
               if (snpshot.hasData) {
-                // Check if the document data exists
                 if (snpshot.data!.docs.isNotEmpty) {
                   final userData =
                       snpshot.data!.docs.first.data() as Map<String, dynamic>;
@@ -109,7 +113,8 @@ class _ProfilePageState extends State<ProfilePage> {
                     child: SingleChildScrollView(
                       child: Column(
                         children: [
-                          Lottie.asset('assets/animations/Profile.json',width: 200),
+                          Lottie.asset('assets/animations/Profile.json',
+                              width: 200),
                           Row(
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: [
@@ -122,7 +127,11 @@ class _ProfilePageState extends State<ProfilePage> {
                                         .inversePrimary),
                               ),
                               IconButton(
-                                icon: Image.asset('assets/flattIcon/delete.png',width: 24.0,color: Theme.of(context).colorScheme.error,),
+                                icon: Image.asset(
+                                  'assets/flattIcon/delete.png',
+                                  width: 24.0,
+                                  color: Theme.of(context).colorScheme.error,
+                                ),
                                 onPressed: () {
                                   showDialog(
                                     context: context,
@@ -133,7 +142,8 @@ class _ProfilePageState extends State<ProfilePage> {
                                             "Are you sure you want to delete this account?"),
                                         actions: [
                                           TextButton(
-                                            onPressed: () => Navigator.pop(context),
+                                            onPressed: () =>
+                                                Navigator.pop(context),
                                             child: Text("Cancel"),
                                           ),
                                           TextButton(
@@ -143,7 +153,7 @@ class _ProfilePageState extends State<ProfilePage> {
                                                   TextEditingController();
                                               Navigator.pop(
                                                   context); // Close the first dialog
-                      
+
                                               showDialog(
                                                 context: context,
                                                 builder: (context) {
@@ -157,7 +167,8 @@ class _ProfilePageState extends State<ProfilePage> {
                                                         Text(
                                                           "Please enter your password to permanently delete your account.",
                                                         ),
-                                                        const SizedBox(height: 10),
+                                                        const SizedBox(
+                                                            height: 10),
                                                         TextField(
                                                           controller:
                                                               passwordController,
@@ -166,7 +177,8 @@ class _ProfilePageState extends State<ProfilePage> {
                                                               InputDecoration(
                                                             border:
                                                                 OutlineInputBorder(),
-                                                            labelText: 'Password',
+                                                            labelText:
+                                                                'Password',
                                                             hintText:
                                                                 'Enter Your Password',
                                                           ),
@@ -175,12 +187,15 @@ class _ProfilePageState extends State<ProfilePage> {
                                                     ),
                                                     actions: [
                                                       TextButton(
-                                                        onPressed: () => Navigator.pop(
-                                                            context), // Close dialog
-                                                        child: const Text("Cancel"),
+                                                        onPressed: () =>
+                                                            Navigator.pop(
+                                                                context), // Close dialog
+                                                        child: const Text(
+                                                            "Cancel"),
                                                       ),
                                                       TextButton(
-                                                        style: TextButton.styleFrom(
+                                                        style: TextButton
+                                                            .styleFrom(
                                                           backgroundColor:
                                                               Colors.redAccent,
                                                           foregroundColor:
@@ -194,7 +209,7 @@ class _ProfilePageState extends State<ProfilePage> {
                                                               passwordController
                                                                   .text,
                                                             );
-                      
+
                                                             Navigator.pop(
                                                                 context); // Close password dialog
                                                             Navigator
@@ -212,17 +227,18 @@ class _ProfilePageState extends State<ProfilePage> {
                                                                 context); // Close password dialog
                                                             showDialog(
                                                               context: context,
-                                                              builder: (context) {
+                                                              builder:
+                                                                  (context) {
                                                                 return AlertDialog(
-                                                                  title:
-                                                                      Text("Error"),
+                                                                  title: Text(
+                                                                      "Error"),
                                                                   content: Text(
                                                                       e.toString()),
                                                                   actions: [
                                                                     TextButton(
-                                                                      onPressed: () =>
-                                                                          Navigator.pop(
-                                                                              context),
+                                                                      onPressed:
+                                                                          () =>
+                                                                              Navigator.pop(context),
                                                                       child: Text(
                                                                           "OK"),
                                                                     ),
@@ -232,7 +248,8 @@ class _ProfilePageState extends State<ProfilePage> {
                                                             );
                                                           }
                                                         },
-                                                        child: const Text("Delete"),
+                                                        child: const Text(
+                                                            "Delete"),
                                                       ),
                                                     ],
                                                   );
@@ -255,8 +272,9 @@ class _ProfilePageState extends State<ProfilePage> {
                             child: Text(
                               "My Details",
                               style: TextStyle(
-                                  color:
-                                      Theme.of(context).colorScheme.inversePrimary),
+                                  color: Theme.of(context)
+                                      .colorScheme
+                                      .inversePrimary),
                             ),
                           ),
                           const SizedBox(height: 10),
@@ -269,6 +287,14 @@ class _ProfilePageState extends State<ProfilePage> {
                             text: userData['bio'] ?? 'No bio set',
                             sectionName: 'bio',
                             onPressed: () => editField('bio'),
+                          ),
+                          MyTextBox(
+                            text: userData['location'] ?? 'No location set',
+                            sectionName: 'location',
+                            onPressed: () => Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) => LocationPage())),
                           ),
                         ],
                       ),
@@ -288,8 +314,6 @@ class _ProfilePageState extends State<ProfilePage> {
                   child: CircularProgressIndicator(),
                 );
               }
-            }
-            )
-            );
+            }));
   }
 }

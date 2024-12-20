@@ -1,5 +1,7 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:deliver/components/my_button.dart';
 import 'package:deliver/pages/Delivery_Progress_Page.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_credit_card/flutter_credit_card.dart';
 
@@ -12,15 +14,25 @@ class PaymentPage extends StatefulWidget {
 
 class _PaymentPageState extends State<PaymentPage> {
   GlobalKey<FormState> formKey = GlobalKey<FormState>();
+  final CollectionReference profile = FirebaseFirestore.instance
+      .collection('Users')
+      .doc(FirebaseAuth.instance.currentUser!.uid)
+      .collection("Profile");
 
   String cardNumber = '';
   String expiryDate = '';
   String cardHolderName = '';
   String cvvCode = '';
   bool isCvvFocused = false;
-  void userTappedPay() {
+  String? location;
+  void userTappedPay() async {
     if (formKey.currentState!.validate()) {
       //shows only wehn from is valid i guss :)
+      QuerySnapshot prfleSnapshot = await profile.get();
+      for (var prfl in prfleSnapshot.docs) {
+        var data = prfl.data() as Map<String, dynamic>;
+        location = data['location'];
+      }
       showDialog(
           context: context,
           builder: (context) => AlertDialog(
@@ -32,6 +44,7 @@ class _PaymentPageState extends State<PaymentPage> {
                       Text("Expire Date: $expiryDate"),
                       Text("Card Holder Name: $cardHolderName"),
                       Text("CCV : $cvvCode"),
+                      Text("Location : $location"),
                     ],
                   ),
                 ),

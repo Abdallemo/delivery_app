@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:deliver/components/my_cart_tile.dart';
 import 'package:deliver/components/my_button.dart';
+import 'package:deliver/pages/checkout.dart';
 import 'package:deliver/pages/payment_page.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -92,7 +93,7 @@ class CartPage extends StatelessWidget {
               MyButton(
                 onTap: () => Navigator.push(
                   context,
-                  MaterialPageRoute(builder: (context) => const PaymentPage()),
+                  MaterialPageRoute(builder: (context) =>  Checkout()),
                 ),
                 text: 'Proceed to Pay',
               ),

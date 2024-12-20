@@ -14,7 +14,7 @@ class MyDescriptionBox extends StatelessWidget {
         borderRadius: BorderRadius.circular(8),
       ),
       padding: const EdgeInsets.all(25),
-      margin: EdgeInsets.only(left: 25,right: 25,bottom: 25),
+      margin: EdgeInsets.only(left: 25,right: 25,bottom: 5),
 
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,

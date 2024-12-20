@@ -34,7 +34,7 @@ class MyTextBox extends StatelessWidget {
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              Text(text),
+              Expanded(child: Text(text)),
             ],
           )
         ],
