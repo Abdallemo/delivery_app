@@ -127,14 +127,6 @@ class _LoginPageState extends State<LoginPage> {
                   ],
                 ),
                 const SizedBox(height: 15),
-
-                // ElevatedButton(onPressed: onPressed, child: child),
-                // IconButton(
-                //     onPressed: () => AuthService().signInWithGoogle(),
-                //     icon: Image.asset(
-                //       'assets/flattIcon/google.png',
-                //       width: 40,
-                //     )),
                 InkWell(
                   onTap: ()=>AuthService().signInWithGoogle(),
                   borderRadius: BorderRadius.circular(

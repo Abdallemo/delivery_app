@@ -28,7 +28,7 @@ class MyTextBox extends StatelessWidget {
               Text(sectionName),
               IconButton(
                   onPressed: onPressed,
-                  icon: Image.asset('assets/flattIcon/editing.png', width: 24.0))
+                  icon: Image.asset('assets/flattIcon/editing.png', width: 24.0,color: Theme.of(context).colorScheme.inversePrimary))
             ],
           ),
           Row(

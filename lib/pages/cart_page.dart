@@ -61,7 +61,7 @@ class CartPage extends StatelessWidget {
                 ),
               );
             },
-            icon: Image.asset('assets/flattIcon/delete.png', width: 24.0),
+            icon: Image.asset('assets/flattIcon/delete.png', width: 24.0,color: Theme.of(context).colorScheme.inversePrimary),
           )
         ],
       ),

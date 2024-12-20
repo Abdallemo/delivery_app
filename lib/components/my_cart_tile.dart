@@ -37,10 +37,10 @@ class MyCartTile extends StatelessWidget {
 
     return Consumer<CartProvider>(
       builder: (context, cartProvider, _) {
-        final userId = FirebaseAuth.instance.currentUser?.uid; // Get the current user's UID
+        final userId = FirebaseAuth.instance.currentUser?.uid; 
 
         if (userId == null) {
-          // Handle the case where the user is not logged in
+          
           return Center(child: Text('Please log in to view your cart.'));
         }
 
@@ -84,22 +84,22 @@ class MyCartTile extends StatelessWidget {
                       food: food,
                       onIncrement: () {
                         cartProvider.updateQuantity(
-                          userId, // Pass the current user ID
-                          cartItemDoc.id, // Pass the cart item ID
-                          quantity + 1, // Pass the new quantity
+                          userId, 
+                          cartItemDoc.id, 
+                          quantity + 1, 
                         );
                       },
                       onDecrement: () {
                         if (quantity > 1) {
                           cartProvider.updateQuantity(
-                            userId, // Pass the current user ID
-                            cartItemDoc.id, // Pass the cart item ID
-                            quantity - 1, // Pass the new quantity
+                            userId, 
+                            cartItemDoc.id, 
+                            quantity - 1, 
                           );
                         } else {
                           cartProvider.removeFromCart(
-                            userId, // Pass the current user ID
-                            cartItemDoc.id, // Pass the cart item ID
+                            userId, 
+                            cartItemDoc.id, 
                           );
                         }
                       },

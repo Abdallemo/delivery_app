@@ -79,7 +79,7 @@ class _LocationPageState extends State<LocationPage> {
             getPlaceDetailWithLatLng: (Prediction prediction) {
               print("placeDetails" + prediction.lat.toString());
             },
-
+    
             itemClick: (Prediction prediction) {
               controller.text = prediction.description ?? "";
               controller.selection = TextSelection.fromPosition(
@@ -107,8 +107,7 @@ class _LocationPageState extends State<LocationPage> {
             // default 600 ms ,
           ),
         ),
-        // SizedBox(height: 10,),
-        //   TextButton(onPressed: (){}, child: Text('save'))
+
       ],
     );
   }

@@ -15,7 +15,7 @@ class MySliverAppBar extends StatelessWidget {
 
     return SliverAppBar(
       key: scaffoldKey,
-      leading: IconButton(onPressed: (){Scaffold.of(context).openDrawer();}, icon: Image.asset('assets/flattIcon/menu.png',width: 24.0,)),
+      leading: IconButton(onPressed: (){Scaffold.of(context).openDrawer();}, icon: Image.asset('assets/flattIcon/menu.png',width: 24.0,color: Theme.of(context).colorScheme.inversePrimary)),
       expandedHeight: 320,
       collapsedHeight: 120,
       floating: false,
@@ -49,7 +49,7 @@ class MySliverAppBar extends StatelessWidget {
                       MaterialPageRoute(builder: (context) => const CartPage()),
                     );
                   },
-                  icon: Image.asset('assets/flattIcon/shopping-bag.png',width: 24.0,),
+                  icon: Image.asset('assets/flattIcon/shopping-bag.png',width: 24.0,color: Theme.of(context).colorScheme.inversePrimary),
                 ),
                 if (itemCount > 0)
                   Positioned(

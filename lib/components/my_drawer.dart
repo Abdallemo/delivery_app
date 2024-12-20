@@ -8,60 +8,89 @@ import 'package:lottie/lottie.dart';
 
 class MyDrawer extends StatelessWidget {
   const MyDrawer({super.key});
-  void logout(BuildContext context){
+  void logout(BuildContext context) {
     final authService = AuthService();
     authService.singOut();
     Navigator.pushReplacementNamed(context, '/Auth');
-
   }
 
   @override
   Widget build(BuildContext context) {
-
     return Drawer(
-      
       backgroundColor: Theme.of(context).colorScheme.surface,
       child: Column(
         children: [
           //logo
           Padding(
             padding: const EdgeInsets.only(top: 50.0),
-            child: Lottie.asset("assets/animations/Animation - 1733839487140.json",width: 155),
-            
+            child: Lottie.asset(
+              "assets/animations/Animation - 1733839487140.json",
+              width: 155,
+            ),
           ),
           Padding(
             padding: EdgeInsets.all(8.0),
-            child: Divider(thickness: 0.5,),
+            child: Divider(
+              thickness: 0.5,
+            ),
           ),
           //home
           MyDrawerTile(
-              icon: Image.asset('assets/flattIcon/home.png',width: 24.0,),
+              icon: Image.asset(
+                'assets/flattIcon/home.png',
+                width: 24.0,
+                color: Theme.of(context).colorScheme.inversePrimary,
+              ),
               onTap: () => Navigator.pop(context),
               text: "H O M E"),
           //settings
           MyDrawerTile(
-              icon: Image.asset('assets/flattIcon/user-icon.png',width: 24.0,),
-              onTap: () { Navigator.pop(context);
-              Navigator.push(context, MaterialPageRoute(builder: (context)=>const ProfilePage()));} ,
+              icon: Image.asset('assets/flattIcon/user-icon.png',
+                  width: 24.0,
+                  color: Theme.of(context).colorScheme.inversePrimary),
+              onTap: () {
+                Navigator.pop(context);
+                Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) => const ProfilePage()));
+              },
               text: "P R O F I L E"),
 
-              MyDrawerTile(
-              icon: Image.asset('assets/flattIcon/shopping-done.png',width: 24.0,),
-              onTap: () { Navigator.pop(context);
-              Navigator.push(context, MaterialPageRoute(builder: (context)=>const DeliveryPage()));} ,
+          MyDrawerTile(
+              icon: Image.asset('assets/flattIcon/shopping-done.png',
+                  width: 24.0,
+                  color: Theme.of(context).colorScheme.inversePrimary),
+              onTap: () {
+                Navigator.pop(context);
+                Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) => const DeliveryPage()));
+              },
               text: "MY P U R C H A S E"),
 
-
-              MyDrawerTile(
-              icon: Image.asset('assets/flattIcon/settings.png',width: 24.0,),
-              onTap: () { Navigator.pop(context);
-              Navigator.push(context, MaterialPageRoute(builder: (context)=>const SettingsPage()));} ,
+          MyDrawerTile(
+              icon: Image.asset('assets/flattIcon/settings.png',
+                  width: 24.0,
+                  color: Theme.of(context).colorScheme.inversePrimary),
+              onTap: () {
+                Navigator.pop(context);
+                Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) => const SettingsPage()));
+              },
               text: "S E T I N G S"),
 
           Spacer(),
           //logout
           MyDrawerTile(
-              icon: Image.asset('assets/flattIcon/logout.png',width: 24.0,), onTap: ()=> logout(context), text: "L O G O U T"),
+              icon: Image.asset('assets/flattIcon/logout.png',
+                  width: 24.0,
+                  color: Theme.of(context).colorScheme.inversePrimary),
+              onTap: () => logout(context),
+              text: "L O G O U T"),
           const SizedBox(
             height: 25,
           )
