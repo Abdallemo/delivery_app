@@ -2,6 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:deliver/components/my_cart_tile.dart';
 import 'package:deliver/components/my_button.dart';
 import 'package:deliver/pages/checkout.dart';
+import 'package:deliver/services/database/firestore_services.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
@@ -21,6 +22,7 @@ class CartPage extends StatelessWidget {
         .collection('Users')
         .doc(userUid)
         .collection('Cart');
+         final firestoreService = FirestoreService();
     print('User UID: $userUid');
 
     return Scaffold(
@@ -51,10 +53,7 @@ class CartPage extends StatelessWidget {
                     TextButton(
                       onPressed: () async {
                         Navigator.pop(context);
-                        final snapshots = await cartCollection.get();
-                        for (var doc in snapshots.docs) {
-                          await doc.reference.delete();
-                        }
+                        await firestoreService.clearCart();
                       },
                       child: const Text('Yes'),
                     )

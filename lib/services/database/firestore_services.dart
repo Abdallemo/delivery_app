@@ -1,5 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:deliver/Models/food.dart';
+
 
 class FirestoreService {
   final CollectionReference orders = FirebaseFirestore.instance
@@ -100,4 +102,49 @@ class FirestoreService {
     return orderStream;
 
   }
+
+
+  Future<void> addToCart(Food food, List<Addon> selectedAddons) async {
+  try {
+    String uniqueFoodName = food.name;
+
+    // Check if the item already exists in Firestore with the same food and addons
+    QuerySnapshot snapshot = await FirebaseFirestore.instance
+        .collection('Users')
+        .doc(FirebaseAuth.instance.currentUser!.uid)
+        .collection('Cart')
+        .where('food.name', isEqualTo: uniqueFoodName)
+        .where('selectedAddons', isEqualTo: selectedAddons.map((addon) => addon.toMap()).toList())
+        .get();
+
+    if (snapshot.docs.isNotEmpty) {
+      // Item exists in Firestore, so update the quantity
+      await snapshot.docs[0].reference.update({
+        'quantity': FieldValue.increment(1),  // Increment the quantity by 1
+      });
+    } else {
+      // Item doesn't exist, so add a new one to Firestore
+      await FirebaseFirestore.instance
+          .collection('Users')
+          .doc(FirebaseAuth.instance.currentUser!.uid)
+          .collection('Cart')
+          .add({
+        'food': {
+          'name': food.name,
+          'description': food.description,
+          'imagePath': food.imagePath,
+          'price': food.price,
+          'catagory': food.catagory.toString().split('.').first,
+          'availableAddons': food.availableAddons.map((addon) => addon.toMap()).toList(),
+        },
+        'selectedAddons': selectedAddons.map((addon) => addon.toMap()).toList(),
+        'quantity': 1,
+        'timestamp': FieldValue.serverTimestamp(),
+      });
+    }
+  } catch (e) {
+    print("Error adding item to cart in Firestore: $e");
+  }
+}
+
 }

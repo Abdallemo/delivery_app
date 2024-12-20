@@ -1,8 +1,7 @@
-import 'package:deliver/Models/resturent.dart';
 import 'package:deliver/components/my_button.dart';
 import 'package:flutter/material.dart';
 import 'package:deliver/Models/food.dart';
-import 'package:provider/provider.dart';
+import 'package:deliver/services/database/firestore_services.dart';
 
 class FoodPage extends StatefulWidget {
   final Food food;
@@ -18,19 +17,20 @@ class FoodPage extends StatefulWidget {
 }
 
 class _FoodPageState extends State<FoodPage> {
+  final firestoreService = FirestoreService();
 
-void addToCart(Food food, Map<Addon,bool>selectedAddons){
-
-  Navigator.pop(context);
-  List<Addon> currentlySelectedAddons=[];
-  for(Addon addon in widget.food.availableAddons){
-    if(widget.selectedAddons[addon]==true){
-      currentlySelectedAddons.add(addon);
+  void addToCart(Food food, Map<Addon, bool> selectedAddons) {
+    Navigator.pop(context);
+    List<Addon> currentlySelectedAddons = [];
+    for (Addon addon in widget.food.availableAddons) {
+      if (widget.selectedAddons[addon] == true) {
+        currentlySelectedAddons.add(addon);
+      }
     }
+
+    firestoreService.addToCart(food, currentlySelectedAddons);
   }
 
-    context.read<Resturent>().addToCart(food, currentlySelectedAddons);
-}
   @override
   Widget build(BuildContext context) {
     final double imageHeight = MediaQuery.of(context).size.height / 3;
@@ -111,7 +111,9 @@ void addToCart(Food food, Map<Addon,bool>selectedAddons){
                   ],
                 ),
               ),
-              MyButton(onTap: () => addToCart(widget.food, widget.selectedAddons), text: "Add to Cart"),
+              MyButton(
+                  onTap: () => addToCart(widget.food, widget.selectedAddons),
+                  text: "Add to Cart"),
               const SizedBox(
                 height: 25,
               )
@@ -120,13 +122,13 @@ void addToCart(Food food, Map<Addon,bool>selectedAddons){
           //name
         ),
         SafeArea(
-
           child: Opacity(
             opacity: 0.6,
             child: Container(
               margin: EdgeInsets.only(left: 25),
-              decoration:
-                  BoxDecoration(color: Theme.of(context).colorScheme.primary,shape: BoxShape.circle),
+              decoration: BoxDecoration(
+                  color: Theme.of(context).colorScheme.primary,
+                  shape: BoxShape.circle),
               child: IconButton(
                   onPressed: () => Navigator.pop(context),
                   icon: Icon(Icons.arrow_back_ios_new_rounded)),
