@@ -1,13 +1,17 @@
 // ignore_for_file: prefer_const_constructors
 
+import 'dart:io';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:deliver/pages/location_page.dart';
+import 'package:deliver/pages/upload_page.dart';
 import 'package:deliver/services/Auth/auth_gate.dart';
 import 'package:deliver/services/Auth/auth_service.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:deliver/components/text_box.dart';
 import 'package:lottie/lottie.dart';
+import 'package:supabase_flutter/supabase_flutter.dart';
 
 class ProfilePage extends StatefulWidget {
   const ProfilePage({super.key});
@@ -17,6 +21,67 @@ class ProfilePage extends StatefulWidget {
 }
 
 class _ProfilePageState extends State<ProfilePage> {
+  File? _profileImage;
+  Future<void> selectAndUploadImage() async {
+    final image = await ImagePickerHelper.pickImage();
+    if (image != null) {
+      setState(() {
+        _profileImage = image;
+      });
+
+      try {
+        // Get current Firebase user
+        final user = FirebaseAuth.instance.currentUser;
+        if (user == null) {
+          throw Exception("User not logged in");
+        }
+
+        // Generate a unique file name using uid and timestamp
+        final fileName =
+            '${user.uid}_${DateTime.now().millisecondsSinceEpoch}.jpg';
+        final path = 'uploads/$fileName';
+
+        // Upload the image to Supabase storage
+        await Supabase.instance.client.storage
+            .from('images')
+            .upload(path, image);
+
+        // Get the public URL of the uploaded image
+        final fileExists = await Supabase.instance.client.storage
+          .from('images')
+          .getPublicUrl(path);
+          
+          
+
+        final publicUrl =
+            Supabase.instance.client.storage.from('images').getPublicUrl(path);
+        final profileCollection = FirebaseFirestore.instance
+            .collection('Users')
+            .doc(user.uid)
+            .collection('Profile');
+
+        final snapshot = await profileCollection.get();
+        if (snapshot.docs.isNotEmpty) {
+          final profileDocId = snapshot.docs.first.id;
+
+          // Update the profileImageUrl field in the document
+          await profileCollection.doc(profileDocId).update({
+            'profileImageUrl': publicUrl,
+          });
+        }
+        // Save the public URL to Firestore under the user's document
+
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text("Image uploaded successfully!")),
+        );
+      } catch (e) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text("Failed to upload image: $e")),
+        );
+      }
+    }
+  }
+
   final user = FirebaseAuth.instance.currentUser!;
   final userCollection = FirebaseFirestore.instance.collection("Users");
   // late final AnimationController _controller;
@@ -113,8 +178,38 @@ class _ProfilePageState extends State<ProfilePage> {
                     child: SingleChildScrollView(
                       child: Column(
                         children: [
-                          Lottie.asset('assets/animations/Profile.json',
-                              width: 200),
+                          Stack(children: [
+                            userData['profileImageUrl'] == 'empty profileImage'
+                                ? Lottie.asset('assets/animations/Profile.json',
+                                    width: 200)
+                                : ClipOval(
+                                    child: Image.network(
+                                    userData['profileImageUrl'],
+                                    width: 200,
+                                    height: 200,
+                                    fit: BoxFit.cover,
+                                  )),
+                            Positioned(
+                              child: IconButton(
+                                  onPressed: () async {
+                                    await selectAndUploadImage();
+                                  },
+                                  icon: Container(
+                                    decoration: BoxDecoration(
+                                        color: Colors.blue,
+                                        borderRadius:
+                                            BorderRadius.circular(20)),
+                                    padding: EdgeInsets.all(4),
+                                    child: Icon(
+                                      Icons.photo_camera_back_outlined,
+                                      size: 34,
+                                      color: Colors.white,
+                                    ),
+                                  )),
+                              right: 20,
+                              bottom: 20,
+                            )
+                          ]),
                           Row(
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: [

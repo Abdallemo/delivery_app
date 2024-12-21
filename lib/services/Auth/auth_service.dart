@@ -53,7 +53,8 @@ class AuthService {
           'username':
               user.displayName ?? user.email?.split('@')[0] ?? "Unknown User",
           'bio': 'Empty bio', 
-          'location':'empt location'// Initial empty bio
+          'location':'empty location',// Initial empty bio
+          'profileImageUrl':'empty profileImage'// Initial empty bio
         });
       }
     }
@@ -95,7 +96,8 @@ class AuthService {
           .add({
         'username': useremail.split('@')[0], // Store the username here
         'bio': 'Empty bio',
-        'location':'empty location' // Initial empty bio
+        'location':'empty location',
+        'profileImageUrl':'empty profileImage' // Initial empty bio
       });
 
       // Create the Cart subcollection with an empty cart for the user

@@ -31,6 +31,8 @@ dependencies:
   flutter_local_notifications: 
   permission_handler: ^10.0.0
   firebase_messaging: ^15.1.6
+  supabase_flutter: ^2.8.2
+  image_picker: ^1.1.2
 dev_dependencies:
   flutter_launcher_icons: ^ 0.14.2
   flutter_test:

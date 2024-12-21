@@ -12,24 +12,27 @@ import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:supabase_flutter/supabase_flutter.dart';
 
-void main()  async{
+void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-   await NotificationHelper.initialize();
-  final prefs= await SharedPreferences.getInstance();
-  final showHome = prefs.getBool('showHome')?? false;
+  await NotificationHelper.initialize();
+  final prefs = await SharedPreferences.getInstance();
+  final showHome = prefs.getBool('showHome') ?? false;
+  await Supabase.initialize(
+      url: 'https://fqvwbnlotawvqjhckexj.supabase.co',
+      anonKey:
+          'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImZxdndibmxvdGF3dnFqaGNrZXhqIiwicm9sZSI6ImFub24iLCJpYXQiOjE3MzQ2MDY4MjUsImV4cCI6MjA1MDE4MjgyNX0.UuMwZ5bjDM71XNq9S4_FmFObvAUJCJ-KufKobYWMvgc');
   await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
-   await FirebaseFcmApi().initNotifications();
+  await FirebaseFcmApi().initNotifications();
   await dotenv.load();
   runApp(MultiProvider(
     providers: [
       ChangeNotifierProvider(create: (create) => ThemeSwitcher()),
       ChangeNotifierProvider(create: (create) => Resturent()),
       ChangeNotifierProvider(create: (create) => CartProvider()),
-      
-
     ],
-    child: MyApp(showHome:showHome),
+    child: MyApp(showHome: showHome),
   ));
 }
 
@@ -49,7 +52,6 @@ class MyApp extends StatelessWidget {
       routes: {
         '/Auth': (context) => const AuthGate(),
         '/homepage': (context) => const HomePage(),
-
       },
     );
   }
