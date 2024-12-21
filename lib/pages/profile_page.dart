@@ -21,6 +21,7 @@ class ProfilePage extends StatefulWidget {
 }
 
 class _ProfilePageState extends State<ProfilePage> {
+  // ignore: unused_field
   File? _profileImage;
   Future<void> selectAndUploadImage() async {
     final image = await ImagePickerHelper.pickImage();
@@ -47,9 +48,9 @@ class _ProfilePageState extends State<ProfilePage> {
             .upload(path, image);
 
         // Get the public URL of the uploaded image
-        final fileExists = await Supabase.instance.client.storage
-          .from('images')
-          .getPublicUrl(path);
+        // final fileExists = await Supabase.instance.client.storage
+        //   .from('images')
+        //   .getPublicUrl(path);
           
           
 
