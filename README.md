@@ -22,7 +22,11 @@ Key features include:
 
 ## 🖼️ **Diagram**
 
-![App Workflow](image-placeholder-url)
+
+
+https://github.com/user-attachments/assets/0daad763-8712-4720-a688-4480b93d9720
+
+
 
 ---
 
