@@ -105,7 +105,7 @@ We expect contributions that align with the overall direction of the app, includ
 
 ## ⚠️ **Known Issues**
 
-- **No known issues** right now. 😎
+- **No known issues** right now. 
 
 ---
 
