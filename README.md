@@ -17,7 +17,6 @@ Key features include:
 
 **Future development plans** include grocery delivery and sustainable operations, setting a benchmark for innovation in the food delivery industry.
 
-[**Demo Video Link**](#) *(You can replace this with the actual link later)*
 
 ---
 
