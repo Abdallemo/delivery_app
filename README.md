@@ -1,3 +1,4 @@
+[![Project Status: ](https://img.shields.io/badge/Project%20Status-%20finsh-green)](https://github.com/Abdallemo/delivery_app)
 # 🚗 **DoorDash - Smart Food Delivery App** 🍔
 
 ### Revolutionizing food delivery with personalized, efficient, and eco-friendly solutions.
@@ -16,13 +17,16 @@ Key features include:
 
 **Future development plans** include grocery delivery and sustainable operations, setting a benchmark for innovation in the food delivery industry.
 
-[**Demo Video Link**](#) *(You can replace this with the actual link later)*
 
 ---
 
 ## 🖼️ **Diagram**
 
-![App Workflow](image-placeholder-url)
+
+
+https://github.com/user-attachments/assets/0daad763-8712-4720-a688-4480b93d9720
+
+
 
 ---
 
