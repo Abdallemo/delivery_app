@@ -21,7 +21,7 @@ class MyTabBar extends StatelessWidget {
     return TabBar(controller: tabController,
       tabs: _buildCatagoryTabs(),
       isScrollable: true,
-
+      tabAlignment: TabAlignment.start,
       );
       
     
